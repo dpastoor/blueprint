@@ -1,3 +1,43 @@
 README
 =======
 
+Create a model blueprint, using a consistent API across modeling platforms.
+
+
+```{r}
+blueprint <- make_blueprint("mrgsolve")
+```
+
+```{r}
+one_cmt <- blueprint %>% 
+  ode_model(cmt = 1, depot = 1) %>%
+  parameterize("CL") %>% 
+  params(CL = 1.6, V = 14.3, KA = 0.8)
+```
+
+```{r}
+one_cmt_block <- one_cmt  %>%
+  add_heirarchy(block(CL = 0.1, V = 0.04, CL_V = 0.01), KA = 0.1) # add a block omega for Cl/V and a separate omega for KA
+
+one_cmt_diag <- one_cmt  %>%
+  add_heirarchy(CL = 0.1, V = 0.04, KA = 0.1) # add diagonal matrix for Cl, V, KA
+```
+
+At this point, we may want to try different residual error structures
+
+```{r}
+one_cmt_block_combined <- one_cmt_block %>% residual_error(add = 1, prop=0.04)
+one_cmt_block_prop <- one_cmt_block %>% residual_error(prop=0.04)
+```
+
+Or both can apply something to multiple models
+
+```{r}
+model_list <- c(one_cmt_block, one_cmt_diag)
+
+map(model_list, function(model) {
+  model %>% residual_error(prop=0.04)
+})
+```
+
+
