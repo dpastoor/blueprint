@@ -3,9 +3,8 @@ README
 
 Create a model blueprint, using a consistent API across modeling platforms.
 
-
 ```{r}
-blueprint <- make_blueprint("mrgsolve")
+blueprint <- make_blueprint("nonmem")
 ```
 
 ```{r}
@@ -17,10 +16,10 @@ one_cmt <- blueprint %>%
 
 ```{r}
 one_cmt_block <- one_cmt  %>%
-  add_heirarchy(block(CL = 0.1, V = 0.04, CL_V = 0.01), KA = 0.1) # add a block omega for Cl/V and a separate omega for KA
+  heirarchy(block(CL = 0.1, V = 0.04, CL_V = 0.01), KA = 0.1) # add a block omega for Cl/V and a separate omega for KA
 
 one_cmt_diag <- one_cmt  %>%
-  add_heirarchy(CL = 0.1, V = 0.04, KA = 0.1) # add diagonal matrix for Cl, V, KA
+  heirarchy(CL = 0.1, V = 0.04, KA = 0.1) # add diagonal matrix for Cl, V, KA
 ```
 
 At this point, we may want to try different residual error structures
@@ -40,4 +39,32 @@ map(model_list, function(model) {
 })
 ```
 
+
+This iterative construction is the same as:
+
+```{r}
+make_blueprint("mrgsolve") %>% 
+  ode_model(cmt = 1, depot = 1) %>%
+  parameterize("CL") %>% 
+  params(CL = 1.6, V = 14.3, KA = 0.8) %>%
+  heirarchy(block(CL = 0.1, V = 0.04, CL_V = 0.01), KA = 0.1) %>% 
+  residual_error(prop=0.04)
+```
+
+As the arguments can be chained, the later steps can be created as a functional blueprint
+
+```{r}
+one_cmt_creator <- . %>% 
+  ode_model(cmt = 1, depot = 1) %>%
+  parameterize("CL") %>% 
+  params(CL = 1.6, V = 14.3, KA = 0.8) %>%
+  heirarchy(block(CL = 0.1, V = 0.04, CL_V = 0.01), KA = 0.1) %>% 
+  residual_error(prop=0.04)
+```
+
+
+```{r}
+make_blueprint("mrgsolve") %>% one_cmt_creator()
+make_blueprint("nonmem") %>% one_cmt_creator()
+```
 
