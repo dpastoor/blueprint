@@ -1,8 +1,8 @@
-context("parameter_details")
+context("param")
 
-describe("parameter_details()", {
+describe("param() works", {
   it("creates a parameter given a value", {
-    expect_equal(parameter_details(6),
+    expect_equal(param(6),
                   list(value = 6,
                        bounds = NULL,
                        fixed = FALSE,
@@ -11,7 +11,7 @@ describe("parameter_details()", {
                   )
   })
   it("saves bounds", {
-    expect_equal(parameter_details(6, c(3, Inf)),
+    expect_equal(param(6, c(3, Inf)),
                   list(value = 6,
                        bounds = c(3, Inf),
                        fixed = FALSE,
@@ -21,9 +21,9 @@ describe("parameter_details()", {
 
   })
   it("errors when bounds improperly specified", {
-    expect_error(parameter_details(6, c(7)))
+    expect_error(param(6, c(7)))
   })
   it("errors when bounds not in range", {
-    expect_error(parameter_details(6, c(7, Inf)))
+    expect_error(param(6, c(7, Inf)))
   })
 })
