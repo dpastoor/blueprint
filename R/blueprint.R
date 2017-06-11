@@ -32,7 +32,8 @@ Blueprint <-
             }
               return(.pn)
            })
-           private$parameters <- set_names(constructed_params, param_names)
+           private$parameters <- modifyList(private$parameters,
+                                            set_names(constructed_params, param_names))
            return(names(constructed_params))
        },
        get_param = function(.x, .value_only = FALSE){
