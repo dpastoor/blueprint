@@ -50,7 +50,7 @@ Blueprint <-
        get_params = function(.value_only = FALSE){
          if (.value_only) {
            return(
-             set_names(map_dbl(private$parameters, ~ .x$value), names(parameters))
+             set_names(map_dbl(private$parameters, ~ .x$value), names(private$parameters))
            )
          }
          return(private$paramaters)
