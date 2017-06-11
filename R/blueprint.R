@@ -36,8 +36,14 @@ Blueprint <-
             }
               return(param_info)
            })
-           private$parameters <- modifyList(private$parameters,
+           browser()
+           final_parameters <- modifyList(private$parameters,
                                             set_names(constructed_params, param_names))
+           # if get a case where everything is overwritten set to empty list
+           if(is.null(final_parameters)) {
+             final_parameters <- list()
+           }
+           private$parameters <- final_parameters
            return(names(constructed_params))
        },
        get_param = function(.x, .value_only = FALSE){
@@ -53,7 +59,7 @@ Blueprint <-
              set_names(map_dbl(private$parameters, ~ .x$value), names(private$parameters))
            )
          }
-         return(private$paramaters)
+         return(private$parameters)
        }
      ),
      private = list(
