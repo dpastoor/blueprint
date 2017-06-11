@@ -1,6 +1,6 @@
 ---
 knit: "bookdown::render_book"
-title: "Simplest Bayesian Example"
+title: "Blueprint"
 author: ["Devin"]
 description: "blueprint specification"
 site: bookdown::bookdown_site
