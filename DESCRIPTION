@@ -13,4 +13,5 @@ Suggests:
 Imports: 
     dplyr (>= 0.5.0),
     rlang,
-    purrr
+    purrr,
+    mrgsolve
