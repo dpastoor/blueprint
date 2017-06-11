@@ -27,10 +27,10 @@ Blueprint <-
             # actually use param() to create full parameter specifications,
             # maybe should create an actual class and check for it
             # but for now going to trust
-            if (!is_list(.pn)) {
+            if (!is_list(param_info)) {
               stop(sprintf("incorrect specification for %s, please use param()", .pn))
             }
-              return(.pn)
+              return(param_info)
            })
            private$parameters <- modifyList(private$parameters,
                                             set_names(constructed_params, param_names))
