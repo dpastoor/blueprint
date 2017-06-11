@@ -36,7 +36,6 @@ Blueprint <-
             }
               return(param_info)
            })
-           browser()
            final_parameters <- modifyList(private$parameters,
                                             set_names(constructed_params, param_names))
            # if get a case where everything is overwritten set to empty list
