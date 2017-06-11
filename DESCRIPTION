@@ -1,11 +1,9 @@
 Package: blueprint
-Type: Package
-Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: create models easily
+Description: design model specifications from a simple interface 
+Authors@R: person("devin", "pastoor", email = "devin.pastoor@gmail.com", role = c("aut", "cre"))
+Depends: R (>= 3.3.2)
+License: MIT + file license 
 Encoding: UTF-8
 LazyData: true
