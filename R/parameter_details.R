@@ -4,10 +4,10 @@
 #' @param .fixed whether the parameter should be fixed
 #' @param covariate_relationships covariate relationships to a parameter
 #' @export
-parameter_details <- function(.value,
-                              .bounds = NULL,
-                              .fixed = FALSE,
-                              covariate_relationships = NULL) {
+param <- function(.value,
+                .bounds = NULL,
+                .fixed = FALSE,
+                covariate_relationships = NULL) {
   output <- list(
     value = .value,
     bounds = .bounds,
