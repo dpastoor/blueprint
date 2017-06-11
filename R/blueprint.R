@@ -1,6 +1,6 @@
 #' base blueprint class
 #' @importFrom R6 R6Class
-#' @importFrom purrr map is_numeric is_list set_names
+#' @importFrom purrr map is_numeric is_list set_names map_dbl
 #' @export
 Blueprint <-
   R6::R6Class("blueprint",
@@ -18,6 +18,10 @@ Blueprint <-
            param_names <- names(param_list)
            constructed_params <- map(param_names, function(.pn) {
             param_info <- param_list[[.pn]]
+
+            if (is.null(param_info)) {
+              return(NULL)
+            }
             # if numeric assume shorthand value only
             # CL = 4.5
             if (is_numeric(param_info)) {
