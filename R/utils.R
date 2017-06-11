@@ -3,6 +3,9 @@ dots <- function (...) {
   list(...)
 }
 
+named_indices <- function(.x) {
+  return(which(.x != ""))
+}
 
 #' Pipe operator
 #'
