@@ -1,8 +1,9 @@
 context("blueprint")
 
-cl_def <- list(value = 5, bounds = NULL, fixed = FALSE, covariate_relationships = NULL)
-v_def <- list(value = 48.2, bounds = c(0, 200), fixed = FALSE, covariate_relationships = NULL)
-cl_def_fixed <- list(value = 5, bounds = NULL, fixed = TRUE, covariate_relationships = NULL)
+cl_def <- list(value = 5, comment = NULL, bounds = NULL, fixed = FALSE, covariate_relationships = NULL)
+cl_def_comment <- list(value = 5, comment = "TVCL; (L/hr)", bounds = NULL, fixed = FALSE, covariate_relationships = NULL)
+v_def <- list(value = 48.2, comment = "TVV; (L)", bounds = c(0, 200), fixed = FALSE, covariate_relationships = NULL)
+cl_def_fixed <- list(value = 5, comment = "TVCL; (L/hr)", bounds = NULL, fixed = TRUE, covariate_relationships = NULL)
 
 describe("Blueprint", {
   it("can take a shorthand parameter definition", {
@@ -17,6 +18,13 @@ describe("Blueprint", {
     blueprint$add_params(CL = cl_def)
     cl <- blueprint$get_param("CL")
     expect_equal(cl, cl_def)
+  })
+
+  it("can take a partial parameter definition", {
+    blueprint <- Blueprint$new()
+    blueprint$add_params(CL = param(5, "TVCL; (L/hr)"))
+    cl <- blueprint$get_param("CL")
+    expect_equal(cl, cl_def_comment)
   })
 
   it("can remove a parameter by setting it to NULL", {
