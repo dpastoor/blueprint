@@ -5,11 +5,13 @@
 #' @param covariate_relationships covariate relationships to a parameter
 #' @export
 param <- function(.value,
-                .bounds = NULL,
-                .fixed = FALSE,
-                covariate_relationships = NULL) {
+                  .comment = NULL,
+                  .bounds = NULL,
+                  .fixed = FALSE,
+                  covariate_relationships = NULL) {
   output <- list(
     value = .value,
+    comment = .comment,
     bounds = .bounds,
     fixed = .fixed,
     covariate_relationships = covariate_relationships
