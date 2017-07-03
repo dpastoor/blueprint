@@ -1,31 +1,35 @@
 #' create details about a parameter
 #' @param .value initial value of a parameter
-#' @param .bounds a vector of lower and upper bounds
+#' @param .lower_bound a lower bound
+#' @param .upper_bound an upper bound
 #' @param .fixed whether the parameter should be fixed
 #' @param covariate_relationships covariate relationships to a parameter
 #' @export
 param <- function(.value,
                   .comment = NULL,
-                  .bounds = NULL,
+                  .lower_bound = NULL,
+                  .upper_bound = NULL,
                   .fixed = FALSE,
                   covariate_relationships = NULL) {
   output <- list(
     value = .value,
     comment = .comment,
-    bounds = .bounds,
+    lower_bound = .lower_bound,
+    upper_bound = .upper_bound,
     fixed = .fixed,
     covariate_relationships = covariate_relationships
   )
-  if (!is.null(.bounds)) {
-    if (
-      length(.bounds) != 2 ||
-      .bounds[1] > .bounds[2] ||
-      !dplyr::between(.value, .bounds[1], .bounds[2])
-    ) {
-      stop("bounds must enclose value, and should be a vector, eg c(0, Inf)")
+  if (!is.null(.lower_bound) || !is.null(.upper_bound)) {
+    lb <- ifelse(is.null(.lower_bound), -Inf, .lower_bound)
+    ub <- ifelse(is.null(.upper_bound), Inf, .upper_bound)
+    if (ub < lb) {
+      stop("upper bound must be greater than lower bound")
     }
-    output$bounds <- .bounds
-
+    if (
+      !dplyr::between(.value, lb, ub)
+    ) {
+      stop("bounds must enclose value")
+    }
   }
   return(output)
 }

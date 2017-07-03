@@ -5,27 +5,27 @@ describe("param() works", {
     expect_equal(param(6),
                   list(value = 6,
                        comment = NULL,
-                       bounds = NULL,
+                       lower_bound = NULL,
+                       upper_bound = NULL,
                        fixed = FALSE,
                        covariate_relationships = NULL
                        )
                   )
   })
   it("saves bounds", {
-    expect_equal(param(6, .bounds = c(3, Inf)),
+    expect_equal(param(6, .lower_bound = 3),
                   list(value = 6,
                        comment = NULL,
-                       bounds = c(3, Inf),
+                       lower_bound = 3,
+                       upper_bound = NULL,
                        fixed = FALSE,
                        covariate_relationships = NULL
                        )
                   )
 
   })
-  it("errors when bounds improperly specified", {
-    expect_error(param(6, .bounds = c(7)))
-  })
   it("errors when bounds not in range", {
-    expect_error(param(6, .bounds = c(7, Inf)))
+    expect_error(param(6, .lower_bound = 2, .upper_bound = 4))
+    expect_error(param(6, .lower_bound = 7))
   })
 })

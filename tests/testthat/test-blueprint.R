@@ -1,9 +1,9 @@
 context("blueprint")
 
-cl_def <- list(value = 5, comment = NULL, bounds = NULL, fixed = FALSE, covariate_relationships = NULL)
-cl_def_comment <- list(value = 5, comment = "TVCL; (L/hr)", bounds = NULL, fixed = FALSE, covariate_relationships = NULL)
-v_def <- list(value = 48.2, comment = "TVV; (L)", bounds = c(0, 200), fixed = FALSE, covariate_relationships = NULL)
-cl_def_fixed <- list(value = 5, comment = "TVCL; (L/hr)", bounds = NULL, fixed = TRUE, covariate_relationships = NULL)
+cl_def <- list(value = 5, comment = NULL, lower_bound = NULL, upper_bound = NULL, fixed = FALSE, covariate_relationships = NULL)
+cl_def_comment <- list(value = 5, comment = "TVCL; (L/hr)", lower_bound = NULL, upper_bound = NULL, fixed = FALSE, covariate_relationships = NULL)
+v_def <- list(value = 48.2, comment = "TVV; (L)", lower_bound = 0, upper_bound = 200, fixed = FALSE, covariate_relationships = NULL)
+cl_def_fixed <- list(value = 5, comment = "TVCL; (L/hr)", lower_bound = NULL, upper_bound = NULL, fixed = TRUE, covariate_relationships = NULL)
 
 describe("Blueprint", {
   it("can take a shorthand parameter definition", {
