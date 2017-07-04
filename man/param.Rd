@@ -4,13 +4,15 @@
 \alias{param}
 \title{create details about a parameter}
 \usage{
-param(.value, .bounds = NULL, .fixed = FALSE,
-  covariate_relationships = NULL)
+param(.value, .comment = NULL, .lower_bound = NULL, .upper_bound = NULL,
+  .fixed = FALSE, covariate_relationships = NULL)
 }
 \arguments{
 \item{.value}{initial value of a parameter}
 
-\item{.bounds}{a vector of lower and upper bounds}
+\item{.lower_bound}{a lower bound}
+
+\item{.upper_bound}{an upper bound}
 
 \item{.fixed}{whether the parameter should be fixed}
 
