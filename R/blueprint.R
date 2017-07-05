@@ -5,11 +5,47 @@
 Blueprint <-
   R6::R6Class("blueprint",
      public = list(
+       partials = NULL,
        initialize = function() {
          # TODO: remove, just using this as a placeholder
          message("initializing new blueprint")
+         self$partials <- load_nonmem_partials()
        },
+       add_constants = function(..., .overwrite = TRUE) {
+           param_list <- dots(...)
+           param_names <- names(param_list)
+           constructed_params <- map(param_names, function(.pn) {
+            param_info <- param_list[[.pn]]
 
+            if (is.null(param_info)) {
+              return(NULL)
+            }
+            # if numeric assume shorthand value only
+            # CL = 4.5
+            if (is_numeric(param_info)) {
+              return(const(param_info,.comment = ""))
+            }
+            # for now going to make the big assumption people will
+            # actually use param() to create full parameter specifications,
+            # maybe should create an actual class and check for it
+            # but for now going to trust
+            if (!is_list(param_info)) {
+              stop(sprintf("incorrect specification for %s, please use const()", .pn))
+            }
+              return(param_info)
+           })
+           final_parameters <- modifyList(private$constants,
+                                            set_names(constructed_params, param_names))
+           # if get a case where everything is overwritten set to empty list
+           if(is.null(final_parameters)) {
+             final_parameters <- list()
+           }
+           private$constants <- purrr::map2(final_parameters, names(final_parameters), function(.p, .n) {
+              .p$name <- .n
+              return(.p)
+           })
+           return(names(constructed_params))
+       },
        # add_params adds parameters specified either shorthand CL = 5,
        # or via param(), it returns a vector of parameter names
        # for any created
