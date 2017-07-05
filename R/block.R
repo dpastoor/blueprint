@@ -24,10 +24,9 @@ block <- function(..., .params, .fix = FALSE, correlation = FALSE, .comment = NU
 #' diagonal values
 #' @param .param parameter name
 #' @export
-omega_param <- function(.value, .param, .fix = FALSE, .comment = NULL) {
+omega_param <- function(.value, .fix = FALSE, .comment = NULL) {
   # note omega param takes param and value singular, vs the block
   return(list(type = "diagonal",
-              param = .param,
               fix = .fix,
               correlation = FALSE,
               value = .value,
