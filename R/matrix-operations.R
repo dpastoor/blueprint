@@ -28,5 +28,5 @@ stringify_matrix <- function(.mat, .fixed = TRUE) {
   if (.fixed) {
     mat_list[[1]] <- sprintf("%s FIXED", mat_list[[1]])
   }
-  return(paste0(mat_list, collapse = " \n"))
+  return(paste0("\n", paste0(mat_list, collapse = " \n")))
 }
