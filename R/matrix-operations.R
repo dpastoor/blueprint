@@ -3,7 +3,7 @@
 #' @param .mat matrix
 #' @param .fixed whether to include FIXED in the first line (for nonmem)
 #' @export
-stringify_matrix <- function(.mat, .fixed = TRUE) {
+stringify_matrix <- function(.mat, .fixed = FALSE) {
   num_rows <- dim(.mat)[1]
   matrix_elements <- .mat[lower.tri(.mat, diag = TRUE)]
   # the row_indices logic below holds for 3, but does not work for 2
