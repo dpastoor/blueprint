@@ -1,0 +1,39 @@
+---
+title: "1 cmpt example"
+output: html_document
+---
+
+```{r}
+library(blueprint)
+library(tidyverse)
+```
+
+```{r}
+blueprint <- Blueprint$new()
+```
+```{r}
+templates <- load_nonmem_templates()
+```
+
+```{r}
+one_cmpt_iv <- blueprint %>% 
+  params(CL = 5,V = param(34, "TVV", .lower_bound = 0.1), KA = 1) 
+```
+
+```{r} 
+one_cmpt_iv <- one_cmpt_iv %>%
+  constants(STD_WT = 70) %>%
+  residual_error(prop = sigma_param(0.04, .comment = "Proportional Error")) %>%
+  with_data(head(Theoph)) %>%
+  from_path("path/to/my_data.csv") %>%
+  heirarchy(KA = 0.04, b1 = block(0.04, 0.61, 0.09, .params = c("CL", "V"), correlation = TRUE)) 
+```
+
+```{r}
+one_cmpt_iv$get_all_elements()
+```
+
+```{r}
+one_cmpt_iv %>% use_template(templates$`1-cmt-iv`) %>% render() %>% cat()
+```
+

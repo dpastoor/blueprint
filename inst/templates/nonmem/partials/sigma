@@ -1,0 +1,7 @@
+{{value}}
+{{#fixed}}
+  FIX
+{{/fixed}}
+{{#comment}}
+  ; {{comment}}
+{{/comment}}

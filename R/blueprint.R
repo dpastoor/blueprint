@@ -113,44 +113,117 @@ Blueprint <-
             # if numeric assume shorthand value only
             # CL = 4.5
             if (is_numeric(omega_info)) {
-              return(omega_param(omega_info, .pn))
+              return(omega_param(omega_info, .fix = FALSE))
             }
             # for now going to make the big assumption people will
             # actually use block()/omega_param to create full omegas specifications,
             # maybe should create an actual class and check for it
             # but for now going to trust
             if (!is_list(omega_info)) {
-              stop(sprintf("incorrect specification for %s, please use omega_omega()", .pn))
+              stop(sprintf("incorrect specification for %s, please use omega_param()", .pn))
             }
               return(omega_info)
            })
-           final_omegas <- modifyList(private$omega,
+           final_omegas <- modifyList(private$omegas,
                                             set_names(constructed_omegas, omega_names))
            # if get a case where everything is overwritten set to empty list
            if(is.null(final_omegas)) {
              final_omegas <- list()
            }
-           private$omega <- final_omegas
+           private$omegas <- final_omegas
            return(names(constructed_omegas))
+       },
+       add_residual_error = function(...){
+         # TODO: currently basically add_param but tweaked to save to sigma - should refactor
+         sigma_list <- dots(...)
+         sigma_names <- names(sigma_list)
+         sigma_names <- sigma_names[!is.null(sigma_names)]
+         if (length(sigma_list) != length(sigma_names)) {
+           stop("all elements must be named - even blocks!")
+         }
+         constructed_sigmas <- map(sigma_names, function(.pn) {
+           sigma_info <- sigma_list[[.pn]]
+
+           if (is.null(sigma_info)) {
+             return(NULL)
+           }
+           # if numeric assume shorthand value only
+           # CL = 4.5
+           if (is_numeric(sigma_info)) {
+             return(sigma_param(sigma_info, .pn))
+           }
+           # for now going to make the big assumption people will
+           # actually use block()/sigma_param to create full sigmas specifications,
+           # maybe should create an actual class and check for it
+           # but for now going to trust
+           if (!is_list(sigma_info)) {
+             stop(sprintf("incorrect specification for %s, please use sigma_sigma()", .pn))
+           }
+           return(sigma_info)
+         })
+         final_sigmas <- modifyList(private$sigmas,
+                                    set_names(constructed_sigmas, sigma_names))
+         # if get a case where everything is overwritten set to empty list
+         if(is.null(final_sigmas)) {
+           final_sigmas <- list()
+         }
+         private$sigmas <- final_sigmas
+         return(names(constructed_sigmas))
        },
        get_all_elements = function() {
          return(
            list(
+             constants = private$constants,
              parameters = private$parameters,
-             omega = private$omega,
-             sigma = private$sigma
+             omegas = private$omegas,
+             sigmas = private$sigmas
            )
+         )
+       },
+       render = function() {
+         if (is.null(private$templ)) {
+            stop("no template defined")
+         }
+         whisker::whisker.render(self$template,
+                        modifyList(purrr::map(self$get_all_elements(), strip_names),
+                                   list(
+                                     equations = paste0(derive_equations(self$get_all_elements()), collapse = "\n"),
+                                     input = paste0(names(private$dat), collapse = " "),
+                                     data = private$datpath
+                                   )),
+                        partials = self$partials
          )
        }
      ),
+     # active bindings available via self
+     active = list(
+       data = function(.data) {
+         if (missing(.data)) {
+           return(private$dat)
+         }
+         private$dat <- .data
+       },
+       datapath = function(.datapath) {
+         if (missing(.datapath)) {
+           return(private$datpath)
+         }
+         private$datpath <- .datapath
+       },
+       template = function(.template) {
+         if (missing(.template)) {
+           return(private$templ)
+         }
+         private$templ <- .template
+       }
+     ),
      private = list(
-       # given a dataset to extract information for the model
-       data = NULL,
-       # parameters is a named list of lists, by parameter name
-       # taking the form param = list(value, bounds, fixed, covariate_relationships)
+       # given a a dataset to extract information for the model
+       datpath = NULL,
+       dat = NULL,
+       templ = NULL,
+       constants = list(),
        parameters = list(),
-       omega = list(),
-       sigma = list()
-
+       omegas = list(),
+       sigmas = list()
      )
 )
