@@ -11,20 +11,38 @@
 #' @export
 block <- function(..., .params, .fix = FALSE, correlation = FALSE, .comment = NULL) {
   output_matrix <- mrgsolve::bmat(..., correlation = correlation)
-  return(list(type = "block",
+  return(list(block = TRUE,
               params = .params,
               fix = .fix,
               correlation = correlation,
-              values = output_matrix,
+              matrix = output_matrix,
+              value = stringify_matrix(output_matrix, .fix),
+              nomega = length(.params),
               comment = .comment
               )
          )
 }
 
 #' diagonal values
-#' @param .param parameter name
+#' @param .value value
+#' @param .fix whether fixed DEFAULT: FALSE
+#' @param .comment comment
 #' @export
 omega_param <- function(.value, .fix = FALSE, .comment = NULL) {
+  # note omega param takes param and value singular, vs the block
+  return(list(block = FALSE,
+              fix = .fix,
+              correlation = FALSE,
+              value = .value,
+              comment = .comment))
+
+}
+#' diagonal values
+#' @param .value value
+#' @param .fix whether fixed DEFAULT: FALSE
+#' @param .comment comment
+#' @export
+sigma_param <- function(.value, .fix = FALSE, .comment = NULL) {
   # note omega param takes param and value singular, vs the block
   return(list(type = "diagonal",
               fix = .fix,
