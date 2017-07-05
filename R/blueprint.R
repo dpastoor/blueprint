@@ -59,6 +59,52 @@ Blueprint <-
            )
          }
          return(private$parameters)
+       },
+       add_heirarchy = function(...){
+         # TODO: currently basically add_param but tweaked to save to omega - should refactor
+           omega_list <- dots(...)
+           omega_names <- names(omega_list)
+           omega_names <- omega_names[!is.null(omega_names)]
+           if (length(omega_list) != length(omega_names)) {
+             stop("all elements must be named - even blocks!")
+           }
+           constructed_omegas <- map(omega_names, function(.pn) {
+            omega_info <- omega_list[[.pn]]
+
+            if (is.null(omega_info)) {
+              return(NULL)
+            }
+            # if numeric assume shorthand value only
+            # CL = 4.5
+            if (is_numeric(omega_info)) {
+              return(omega_param(omega_info, .pn))
+            }
+            # for now going to make the big assumption people will
+            # actually use block()/omega_param to create full omegas specifications,
+            # maybe should create an actual class and check for it
+            # but for now going to trust
+            if (!is_list(omega_info)) {
+              stop(sprintf("incorrect specification for %s, please use omega_omega()", .pn))
+            }
+              return(omega_info)
+           })
+           final_omegas <- modifyList(private$omega,
+                                            set_names(constructed_omegas, omega_names))
+           # if get a case where everything is overwritten set to empty list
+           if(is.null(final_omegas)) {
+             final_omegas <- list()
+           }
+           private$omega <- final_omegas
+           return(names(constructed_omegas))
+       },
+       get_all_elements = function() {
+         return(
+           list(
+             parameters = private$parameters,
+             omega = private$omega,
+             sigma = private$sigma
+           )
+         )
        }
      ),
      private = list(
