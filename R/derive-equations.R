@@ -1,3 +1,9 @@
+equation_derivations = function(type) {
+  switch(type,
+         mrgsolve = derive_equations_mrgsolve,
+         nonmem = derive_equations
+         )
+}
 #' derive equations
 derive_equations <- function(elements) {
   params <- elements$parameters
@@ -23,5 +29,34 @@ derive_equations <- function(elements) {
   nofulls <- purrr::map(no_random_effect, function(.p) {
     sprintf("%s = TV%s", .p, .p)
   })
-  return(unlist(c(tvs, fulls, nofulls)))
+  # need to flatten one level so not a list of lists
+  return(purrr::flatten(list(tvs, fulls, nofulls)))
+}
+
+#' derive equations
+derive_equations_mrgsolve <- function(elements) {
+  params <- elements$parameters
+  omegas <- elements$omegas
+
+  param_names <- names(params)
+
+  omega_names <- purrr::map2(omegas, names(omegas), function(.omega, .name) {
+    #
+    if (.omega$block) {
+      return(.omega$params)
+    }
+    # for diagonal elements just return the name
+    return(.name)
+  }) %>% purrr::flatten() %>% unlist()
+
+  both_names <- intersect(param_names, omega_names)
+  no_random_effect <- setdiff(param_names, omega_names)
+  fulls <- purrr::map(both_names, function(.p) {
+    sprintf("%s = TV%s*exp(ETA%s)", .p, .p, which(omega_names == .p))
+  })
+  nofulls <- purrr::map(no_random_effect, function(.p) {
+    sprintf("%s = TV%s", .p, .p)
+  })
+  # need to flatten one level so not a list of lists
+  return(purrr::flatten(list(fulls, nofulls)))
 }
