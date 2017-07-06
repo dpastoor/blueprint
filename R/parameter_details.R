@@ -4,20 +4,23 @@
 #' @param .upper_bound an upper bound
 #' @param .fixed whether the parameter should be fixed
 #' @param covariate_relationships covariate relationships to a parameter
+#' @param .name name of parameter if can be customized (software dependent)
 #' @export
 param <- function(.value,
                   .comment = NULL,
                   .lower_bound = NULL,
                   .upper_bound = NULL,
                   .fixed = FALSE,
-                  covariate_relationships = NULL) {
+                  covariate_relationships = NULL,
+                  .name = NULL) {
   output <- list(
     value = .value,
     comment = .comment,
     lower_bound = .lower_bound,
     upper_bound = .upper_bound,
     fixed = .fixed,
-    covariate_relationships = covariate_relationships
+    covariate_relationships = covariate_relationships,
+    name = .name
   )
   if (!is.null(.lower_bound) || !is.null(.upper_bound)) {
     lb <- ifelse(is.null(.lower_bound), -Inf, .lower_bound)

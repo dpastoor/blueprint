@@ -6,10 +6,11 @@ Blueprint <-
   R6::R6Class("blueprint",
      public = list(
        partials = NULL,
-       initialize = function() {
+       initialize = function(type = "nonmem") {
          # TODO: remove, just using this as a placeholder
-         message("initializing new blueprint")
-         self$partials <- load_nonmem_partials()
+         message(sprintf("initializing new blueprint of type: %s", type))
+         self$partials <- load_partials(type)
+         private$create_equations <- equation_derivations(type)
        },
        add_constants = function(..., .overwrite = TRUE) {
            param_list <- dots(...)
@@ -23,7 +24,7 @@ Blueprint <-
             # if numeric assume shorthand value only
             # CL = 4.5
             if (is_numeric(param_info)) {
-              return(const(param_info,.comment = ""))
+              return(const(param_info, .comment = .pn))
             }
             # for now going to make the big assumption people will
             # actually use param() to create full parameter specifications,
@@ -61,7 +62,7 @@ Blueprint <-
             # if numeric assume shorthand value only
             # CL = 4.5
             if (is_numeric(param_info)) {
-              return(param(param_info))
+              return(param(param_info, .name = .pn, .comment = .pn))
             }
             # for now going to make the big assumption people will
             # actually use param() to create full parameter specifications,
@@ -71,6 +72,14 @@ Blueprint <-
               stop(sprintf("incorrect specification for %s, please use param()", .pn))
             }
               return(param_info)
+           })
+           constructed_params <- purrr::map2(constructed_params,
+                                             param_names,
+                                             .f = function(.param, .name) {
+             if (is.null(.param$name)) {
+               .param$name <- .name
+             }
+             return(.param)
            })
            final_parameters <- modifyList(private$parameters,
                                             set_names(constructed_params, param_names))
@@ -150,7 +159,7 @@ Blueprint <-
            # if numeric assume shorthand value only
            # CL = 4.5
            if (is_numeric(sigma_info)) {
-             return(sigma_param(sigma_info, .pn))
+             return(sigma_param(sigma_info, FALSE, .comment = .pn))
            }
            # for now going to make the big assumption people will
            # actually use block()/sigma_param to create full sigmas specifications,
@@ -160,6 +169,14 @@ Blueprint <-
              stop(sprintf("incorrect specification for %s, please use sigma_sigma()", .pn))
            }
            return(sigma_info)
+         })
+         constructed_sigmas <- purrr::map2(constructed_sigmas,
+                                           sigma_names,
+                                           .f = function(.sigma, .name) {
+           if (is.null(.sigma$name)) {
+             .sigma$name <- .name
+           }
+           return(.sigma)
          })
          final_sigmas <- modifyList(private$sigmas,
                                     set_names(constructed_sigmas, sigma_names))
@@ -184,10 +201,11 @@ Blueprint <-
          if (is.null(private$templ)) {
             stop("no template defined")
          }
+         settings <- purrr::map(self$get_all_elements(), strip_names)
          whisker::whisker.render(self$template,
-                        modifyList(purrr::map(self$get_all_elements(), strip_names),
+                        modifyList(settings,
                                    list(
-                                     equations = paste0(derive_equations(self$get_all_elements()), collapse = "\n"),
+                                     equations = private$create_equations(self$get_all_elements()),
                                      input = paste0(names(private$dat), collapse = " "),
                                      data = private$datpath
                                    )),
@@ -224,6 +242,7 @@ Blueprint <-
        constants = list(),
        parameters = list(),
        omegas = list(),
-       sigmas = list()
+       sigmas = list(),
+       create_equations = NULL
      )
 )
