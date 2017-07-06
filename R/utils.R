@@ -7,6 +7,12 @@ named_indices <- function(.x) {
   return(which(.x != ""))
 }
 
+# for templates, so that will collapse organization, unless it was a completely empty line, in which
+# it will retain the break
+collapse <- function(.x) {
+  splits <- split(.x, cumsum(.x == ""))
+  paste0(purrr::map(splits, paste0, collapse = ""), collapse = "\n")
+}
 #' Pipe operator
 #'
 #' @name %>%

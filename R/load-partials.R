@@ -1,16 +1,18 @@
-#' load partials from nonmem
+#' load partials from a given type
+#' @param type type - nonmem or mrgsolve
 #' @export
-load_nonmem_partials <- function() {
-  partials <- dir(system.file("templates/nonmem/partials", package = "blueprint"), full.names = T)
-  partial_templates <- purrr::set_names(purrr::map(partials, ~ paste0(paste0(readr::read_lines(.x), collapse = ""), "\n")),
+load_partials <- function(type) {
+  partials <- dir(system.file(sprintf("templates/%s/partials", type), package = "blueprint"), full.names = T)
+  partial_templates <- purrr::set_names(purrr::map(partials, ~ paste0(collapse(readr::read_lines(.x)), "\n")),
                                         tools::file_path_sans_ext(basename(partials)))
   return(partial_templates)
 }
 
-#' load nonmem templates
+#' load  templates
+#' @param type type - nonmem or mrgsolve
 #' @export
-load_nonmem_templates <- function() {
-  template_files <- dir(system.file("templates/nonmem", package = "blueprint"), full.names = T) %>% purrr::discard(is_dir)
+load_templates <- function(type) {
+  template_files <- dir(system.file(sprintf("templates/%s", type), package = "blueprint"), full.names = T) %>% purrr::discard(is_dir)
   templates <- purrr::set_names(purrr::map(template_files, readr::read_file),
                                         tools::file_path_sans_ext(basename(template_files)))
   return(templates)
