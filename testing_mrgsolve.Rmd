@@ -9,10 +9,10 @@ library(tidyverse)
 ```
 
 ```{r}
-blueprint <- Blueprint$new("nonmem")
+blueprint <- Blueprint$new("mrgsolve")
 ```
 ```{r}
-templates <- load_templates("nonmem")
+templates <- load_templates("mrgsolve")
 ```
 
 ```{r}
@@ -34,6 +34,6 @@ one_cmpt_iv$get_all_elements()
 ```
 
 ```{r}
-one_cmpt_iv %>% use_template(templates$`1-cmt-iv`) %>% render() %>% cat()
+one_cmpt_iv %>% use_template(templates$one_cmt_iv) %>% render() %>% cat()
 ```
 

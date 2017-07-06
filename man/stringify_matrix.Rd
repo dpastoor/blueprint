@@ -4,7 +4,7 @@
 \alias{stringify_matrix}
 \title{return the scaled covariance matrix as a string to embed in a file, in scientific notation}
 \usage{
-stringify_matrix(.mat, .fixed = TRUE)
+stringify_matrix(.mat, .fixed = FALSE)
 }
 \arguments{
 \item{.mat}{matrix}
