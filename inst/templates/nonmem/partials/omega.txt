@@ -1,8 +1,9 @@
 {{#block}}
 $OMEGA BLOCK({{nomega}})
- {{value}}
+{{value}}
 {{/block}}
 {{^block}}
 $OMEGA
- {{value}}
+
+{{value}}
 {{/block}}

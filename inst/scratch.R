@@ -1,4 +1,4 @@
-blueprint <- Blueprint$new()
+blueprint <- Blueprint$new("mrgsolve")
 
 blueprint$add_params(CL = 5, V = 34)
 blueprint$add_constants(STD_WT = 70)
@@ -9,8 +9,9 @@ blueprint$get_all_elements()
 
 blueprint$data <- head(Theoph)
 blueprint$datapath <- "path/to/my/data.csv"
-tmplt <- load_nonmem_templates()
-blueprint$template <- tmplt$`1-cmt-iv`
+tmplt <- load_templates("mrgsolve")
+blueprint$template <- tmplt$one_cmt_iv
+#blueprint$template <- tmplt$`1-cmt-iv`
 
 cat(blueprint$render())
 

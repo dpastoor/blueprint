@@ -1,0 +1,37 @@
+[PARAM] @annotated
+{{#parameters}}
+{{> parameter}}
+{{/parameters}}
+
+[FIXED] @annotated
+{{#constants}}
+  {{> constant}}
+{{/constants}}
+
+[PKMODEL]
+ncmt=1, trans=2
+
+[CMT] @annotated
+CENT : Central compartment
+
+[MAIN]
+
+D_CENT = 1
+
+{{#equations}}
+{{> equation}}
+{{/equations}}
+
+{{#omegas}}
+{{> omega}}
+
+{{/omegas}}
+
+[SIGMA] @annotated
+{{#sigmas}}
+{{> sigma}}
+{{/sigmas}}
+
+
+[TABLE]
+double CP = CENT/V

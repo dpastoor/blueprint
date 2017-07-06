@@ -14,7 +14,9 @@ $PK
   {{> constant}}
 {{/constants}}
 
-{{equations}}
+{{#equations}}
+ {{.}}
+{{/equations}}
 
 $THETA
 {{#parameters}}
@@ -23,6 +25,7 @@ $THETA
 
 {{#omegas}}
 {{> omega}}
+
 {{/omegas}}
 
 $SIGMA

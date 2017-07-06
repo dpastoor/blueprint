@@ -1,9 +1,9 @@
 {{#lower_bound}}
- ( {{lower_bound}} ,
+({{lower_bound}} ,
 {{/lower_bound}}
  {{value}}
 {{#upper_bound}}
-  , {{upper_bound}} )
+, {{upper_bound}})
 {{/upper_bound}}
 {{^upper_bound}}
 {{#lower_bound}}

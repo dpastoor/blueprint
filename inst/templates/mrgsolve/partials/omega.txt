@@ -1,0 +1,9 @@
+{{#block}}
+[OMEGA] @block
+ {{value}}
+{{/block}}
+{{^block}}
+[OMEGA]
+
+ {{value}}
+{{/block}}
