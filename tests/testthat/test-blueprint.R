@@ -1,9 +1,9 @@
 context("blueprint")
 
-cl_def <- list(value = 5, comment = NULL, lower_bound = NULL, upper_bound = NULL, fixed = FALSE, covariate_relationships = NULL)
-cl_def_comment <- list(value = 5, comment = "TVCL; (L/hr)", lower_bound = NULL, upper_bound = NULL, fixed = FALSE, covariate_relationships = NULL)
-v_def <- list(value = 48.2, comment = "TVV; (L)", lower_bound = 0, upper_bound = 200, fixed = FALSE, covariate_relationships = NULL)
-cl_def_fixed <- list(value = 5, comment = "TVCL; (L/hr)", lower_bound = NULL, upper_bound = NULL, fixed = TRUE, covariate_relationships = NULL)
+cl_def <- Parameter$new(5, name = "CL")
+cl_def_comment <- Parameter$new(value = 5, name = "CL", comment = "TVCL; (L/hr)")
+v_def <- Parameter$new(value = 48.2, name = "V", comment = "TVV; (L)", lower_bound = 0, upper_bound = 200)
+cl_def_fixed <- Parameter$new(value = 5, name = "CL", comment = "TVCL; (L/hr)", fixed = TRUE)
 
 describe("Blueprint", {
   it("can take a shorthand parameter definition", {
@@ -18,11 +18,21 @@ describe("Blueprint", {
     blueprint$add_params(CL = cl_def)
     cl <- blueprint$get_param("CL")
     expect_equal(cl, cl_def)
+    # to maintain equivalence to test below
+    expect_true(isTRUE(all.equal(cl, cl_def)))
+  })
+  it("sets a new name when specified during parameter addition", {
+    blueprint <- Blueprint$new()
+    blueprint$add_params(TVCL = cl_def)
+    cl <- blueprint$get_param("TVCL")
+    expect_false(isTRUE(all.equal(cl, cl_def)))
+    expect_equal(cl$get_link(), "CL")
+    expect_equal(cl$get_name(), "TVCL")
   })
 
   it("can take a partial parameter definition", {
     blueprint <- Blueprint$new()
-    blueprint$add_params(CL = param(5, "TVCL; (L/hr)"))
+    blueprint$add_params(CL = Parameter$new(5, comment = "TVCL; (L/hr)"))
     cl <- blueprint$get_param("CL")
     expect_equal(cl, cl_def_comment)
   })
