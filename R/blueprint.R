@@ -1,6 +1,6 @@
 #' base blueprint class
 #' @importFrom R6 R6Class
-#' @importFrom purrr map map2 is_numeric is_list set_names map_dbl
+#' @importFrom purrr map map2 is_numeric is_list set_names map_dbl map_lgl discard
 #' @export
 Blueprint <-
   R6::R6Class("blueprint",
@@ -95,9 +95,11 @@ Blueprint <-
            # in case anything was just given as a parameter block
            constructed_param_names <- purrr::map(constructed_params, ~ .x$get_name())
            final_parameters <- modifyList(private$parameters,
-                                            set_names(constructed_params, constructed_param_names))
+                                            set_names(constructed_params, constructed_param_names)) %>%
+             discard(is.null)
            # if get a case where everything is overwritten set to empty list
-           if(is.null(final_parameters)) {
+           if (!length(final_parameters)) {
+             # don't want a named list just a bare empty list
              final_parameters <- list()
            }
            private$parameters <- final_parameters
@@ -147,9 +149,11 @@ Blueprint <-
               return(omega_info)
            })
            final_omegas <- modifyList(private$omegas,
-                                            set_names(constructed_omegas, omega_names))
+                                            set_names(constructed_omegas, omega_names)) %>%
+             discard(is.null)
            # if get a case where everything is overwritten set to empty list
-           if(is.null(final_omegas)) {
+           if (!length(final_omegas)) {
+             # don't want a named list just a bare empty list
              final_omegas <- list()
            }
            private$omegas <- final_omegas
@@ -192,9 +196,10 @@ Blueprint <-
            return(.sigma)
          })
          final_sigmas <- modifyList(private$sigmas,
-                                    set_names(constructed_sigmas, sigma_names))
+                                    set_names(constructed_sigmas, sigma_names)) %>%
+           discard(is.null)
          # if get a case where everything is overwritten set to empty list
-         if(is.null(final_sigmas)) {
+         if (!length(final_sigmas)) {
            final_sigmas <- list()
          }
          private$sigmas <- final_sigmas
