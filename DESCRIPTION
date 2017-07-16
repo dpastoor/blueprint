@@ -9,11 +9,13 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Suggests: 
+    debugme,
     testthat
 Imports: 
     dplyr (>= 0.5.0),
-    rlang,
-    purrr,
     mrgsolve,
+    magrittr,
+    purrr,
     R6,
-    magrittr
+    rlang,
+    whisker
