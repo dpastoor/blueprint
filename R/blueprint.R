@@ -61,13 +61,16 @@ Blueprint <-
            param_list <- dots(...)
            param_names <- names(param_list)
            # clear out any null parameters
-           null_indices <- is.null(param_list)
+           null_indices <- purrr::map_lgl(param_list, is.null)
            to_remove <- param_names[null_indices]
            purrr::walk(to_remove, function(.x) {
              private$parameters[[.x]] <- NULL
            })
            param_list <- param_list[!null_indices]
            param_names <- param_names[!null_indices]
+           if (!length(param_list)) {
+             return(invisible())
+           }
            constructed_params <- map2(param_list, param_names, function(param_info, .pn) {
               # if numeric assume shorthand value only
               # CL = 4.5
@@ -83,6 +86,10 @@ Blueprint <-
               if (.pn != "") {
                 param_info$set_name(.pn)
               }
+             # if link null, set equal to name
+             if (is.null(param_info$get_link())) {
+               param_info$set_link(.pn)
+             }
              return(param_info)
            })
            # in case anything was just given as a parameter block
