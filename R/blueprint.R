@@ -53,36 +53,34 @@ Blueprint <-
        add_params = function(..., .overwrite = TRUE) {
            param_list <- dots(...)
            param_names <- names(param_list)
-           constructed_params <- map(param_names, function(.pn) {
-            param_info <- param_list[[.pn]]
-
-            if (is.null(param_info)) {
-              return(NULL)
-            }
-            # if numeric assume shorthand value only
-            # CL = 4.5
-            if (is_numeric(param_info)) {
-              return(param(param_info, .name = .pn, .comment = .pn))
-            }
-            # for now going to make the big assumption people will
-            # actually use param() to create full parameter specifications,
-            # maybe should create an actual class and check for it
-            # but for now going to trust
-            if (!is_list(param_info)) {
-              stop(sprintf("incorrect specification for %s, please use param()", .pn))
-            }
-              return(param_info)
+           # clear out any null parameters
+           null_indices <- is.null(param_list)
+           to_remove <- param_names[null_indices]
+           purrr::walk(to_remove, function(.x) {
+             private$parameters[[.x]] <- NULL
            })
-           constructed_params <- purrr::map2(constructed_params,
-                                             param_names,
-                                             .f = function(.param, .name) {
-             if (is.null(.param$name)) {
-               .param$name <- .name
-             }
-             return(.param)
+           param_list <- param_list[!null_indices]
+           param_names <- param_names[!null_indices]
+           constructed_params <- map2(param_list, param_names, function(param_info, .pn) {
+              # if numeric assume shorthand value only
+              # CL = 4.5
+              if (is_numeric(param_info)) {
+                return(Parameter$new(param_info, name = .pn, comment = .pn))
+              }
+              if (!("Parameter" %in% class(param_info))) {
+                stop(sprintf("incorrect specification for %s,
+                             please construct a parameter specification with Parameter$new()", .pn))
+              }
+               # if a parameter name was set, should set that name, so can override pre-specified param names
+              if (.pn != "") {
+                param_info$set_name(.pn)
+              }
+             return(param_info)
            })
+           # in case anything was just given as a parameter block
+           constructed_param_names <- purrr::map(constructed_params, ~ .x$get_name())
            final_parameters <- modifyList(private$parameters,
-                                            set_names(constructed_params, param_names))
+                                            set_names(constructed_params, constructed_param_names))
            # if get a case where everything is overwritten set to empty list
            if(is.null(final_parameters)) {
              final_parameters <- list()
