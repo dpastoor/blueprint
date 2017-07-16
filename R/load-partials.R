@@ -2,7 +2,10 @@
 #' @param type type - nonmem or mrgsolve
 #' @export
 load_partials <- function(type) {
-  partials <- dir(system.file(sprintf("templates/%s/partials", type), package = "blueprint"), full.names = T)
+  partials <- dir(system.file(sprintf("templates/%s/partials", type),
+                              package = "blueprint"),
+                  full.names = T,
+                  recursive = T) %>% purrr::discard(is_dir)
   partial_templates <- purrr::set_names(purrr::map(partials, ~ paste0(collapse(readr::read_lines(.x)), "\n")),
                                         tools::file_path_sans_ext(basename(partials)))
   return(partial_templates)
