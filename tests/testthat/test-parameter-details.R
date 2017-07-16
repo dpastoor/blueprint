@@ -21,7 +21,7 @@ describe("Parameter works", {
     expect_equal(Parameter$new(6, lower_bound = 3)$get_all_information(),
          structure(list(name = NULL, value = 6, comment = NULL, lower_bound = 3,
                         upper_bound = Inf, fixed = FALSE, covariate_relationships = NULL,
-                        link = "tmp"),
+                        link = NULL),
                    .Names = c("name", "value", "comment", "lower_bound",
                             "upper_bound", "fixed", "covariate_relationships", "link")))
   })
