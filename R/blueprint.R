@@ -1,6 +1,6 @@
 #' base blueprint class
 #' @importFrom R6 R6Class
-#' @importFrom purrr map is_numeric is_list set_names map_dbl
+#' @importFrom purrr map map2 is_numeric is_list set_names map_dbl
 #' @export
 Blueprint <-
   R6::R6Class("blueprint",
@@ -9,8 +9,15 @@ Blueprint <-
        initialize = function(type = "nonmem") {
          # TODO: remove, just using this as a placeholder
          message(sprintf("initializing new blueprint of type: %s", type))
-         self$partials <- load_partials(type)
-         private$create_equations <- equation_derivations(type)
+         if (missing(type)) {
+           type <- NULL
+         }
+         if (!is.null(type)) {
+          self$partials <- load_partials(type)
+          private$create_equations <- equation_derivations(type)
+         } else {
+           message("no type specified, no pre-loaded templates initialized")
+         }
        },
        add_constants = function(..., .overwrite = TRUE) {
            param_list <- dots(...)
@@ -65,12 +72,13 @@ Blueprint <-
               # if numeric assume shorthand value only
               # CL = 4.5
               if (is_numeric(param_info)) {
-                return(Parameter$new(param_info, name = .pn, comment = .pn))
+                return(Parameter$new(param_info, name = .pn))
               }
               if (!("Parameter" %in% class(param_info))) {
                 stop(sprintf("incorrect specification for %s,
                              please construct a parameter specification with Parameter$new()", .pn))
               }
+             param_info <- param_info$clone()
                # if a parameter name was set, should set that name, so can override pre-specified param names
               if (.pn != "") {
                 param_info$set_name(.pn)
