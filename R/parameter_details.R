@@ -6,7 +6,8 @@ const <- function(.value, .comment) {
   return(list(value = .value, comment = .comment))
 }
 
-#'
+#' Parameter class
+#' @export
 Parameter <- R6Class("Parameter",
                   public = list(
                   initialize =  function(
