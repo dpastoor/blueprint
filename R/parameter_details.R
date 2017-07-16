@@ -10,8 +10,8 @@ const <- function(.value, .comment) {
 Parameter <- R6Class("Parameter",
                   public = list(
                   initialize =  function(
-                  name,
                   value,
+                  name = NULL,
                   comment = NULL,
                   lower_bound = -Inf,
                   upper_bound = Inf,
