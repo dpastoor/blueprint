@@ -1,6 +1,6 @@
 #' base blueprint class
 #' @importFrom R6 R6Class
-#' @importFrom purrr map map2 is_numeric is_list set_names map_dbl map_lgl discard
+#' @importFrom purrr map map2 is_numeric is_list set_names map_dbl map_lgl discard keep flatten
 #' @export
 Blueprint <-
   R6::R6Class("blueprint",
@@ -155,6 +155,19 @@ Blueprint <-
            if (!length(final_omegas)) {
              # don't want a named list just a bare empty list
              final_omegas <- list()
+           }
+           block_names <- final_omegas %>%
+             keep(~ .x$block) %>%
+             map(~ .x$params) %>%
+             flatten()
+           diag_names <- final_omegas %>%
+             discard(~ .x$block) %>%
+             names(.)
+
+           both_names <- intersect(block_names, diag_names)
+           if (length(both_names)) {
+             stop(glue::glue("detected omega elements in both a diagonal and block element for: {params}",
+                             params = paste0(both_names, collapse = ", ")))
            }
            private$omegas <- final_omegas
            return(names(constructed_omegas))
