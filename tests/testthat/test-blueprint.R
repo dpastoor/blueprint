@@ -21,6 +21,7 @@ describe("Blueprint", {
     # to maintain equivalence to test below
     expect_true(isTRUE(all.equal(cl, cl_def)))
   })
+
   it("sets a new name when specified during parameter addition", {
     blueprint <- Blueprint$new()
     blueprint$add_params(TVCL = cl_def)

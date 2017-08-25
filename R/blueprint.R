@@ -81,10 +81,11 @@ Blueprint <-
                 stop(sprintf("incorrect specification for %s,
                              please construct a parameter specification with `parameter()`", .pn))
               }
-               # if a parameter name was set, should set that name, so can override pre-specified param names
-              if (is.null(name(param_info))) {
-                param_info <- update(param_info, name = .pn)
-              }
+
+             # for now will force a name for all parameters, through the add_param
+             # call, eg add_param(<name> = parameter()), so even if a name
+             # is set, it will override.
+              param_info <- update(param_info, name = .pn)
              # if link null, set equal to name
              if (is.null(link(param_info))) {
                param_info <- update(param_info, link = name(param_info))
