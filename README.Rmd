@@ -4,7 +4,7 @@
 
 [![Coverage status](https://codecov.io/gh/dpastoor/blueprint/branch/master/graph/badge.svg)](https://codecov.io/github/dpastoor/blueprint?branch=master)
 
-README
+BLUEPRINT
 =======
 
 Create a model blueprint, using a consistent API across modeling platforms.
