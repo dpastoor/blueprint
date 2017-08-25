@@ -4,14 +4,14 @@
 \alias{omega_param}
 \title{diagonal values}
 \usage{
-omega_param(.value, .fix = FALSE, .comment = NULL)
+omega_param(value, fix = FALSE, comment = NULL)
 }
 \arguments{
-\item{.value}{value}
+\item{value}{value}
 
-\item{.fix}{whether fixed DEFAULT: FALSE}
+\item{fix}{whether fixed DEFAULT: FALSE}
 
-\item{.comment}{comment}
+\item{comment}{comment}
 }
 \description{
 diagonal values

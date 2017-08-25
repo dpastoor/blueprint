@@ -1,6 +1,7 @@
 #' base blueprint class
 #' @importFrom R6 R6Class
-#' @importFrom purrr map is_numeric is_list set_names map_dbl
+#' @importFrom purrr map map2 is_list set_names map_dbl map_lgl discard keep flatten
+#' @importFrom rlang is_bare_numeric
 #' @export
 Blueprint <-
   R6::R6Class("blueprint",
@@ -9,8 +10,15 @@ Blueprint <-
        initialize = function(type = "nonmem") {
          # TODO: remove, just using this as a placeholder
          message(sprintf("initializing new blueprint of type: %s", type))
-         self$partials <- load_partials(type)
-         private$create_equations <- equation_derivations(type)
+         if (missing(type)) {
+           type <- NULL
+         }
+         if (!is.null(type)) {
+          self$partials <- load_partials(type)
+          private$equation_mapper <- equation_derivations(type)
+         } else {
+           message("no type specified, no pre-loaded templates initialized")
+         }
        },
        add_constants = function(..., .overwrite = TRUE) {
            param_list <- dots(...)
@@ -23,14 +31,10 @@ Blueprint <-
             }
             # if numeric assume shorthand value only
             # CL = 4.5
-            if (is_numeric(param_info)) {
-              return(const(param_info, .comment = .pn))
+            if (is_bare_numeric(param_info)) {
+              return(const(param_info, comment = .pn))
             }
-            # for now going to make the big assumption people will
-            # actually use param() to create full parameter specifications,
-            # maybe should create an actual class and check for it
-            # but for now going to trust
-            if (!is_list(param_info)) {
+            if (!inherits(param_info, "const")) {
               stop(sprintf("incorrect specification for %s, please use const()", .pn))
             }
               return(param_info)
@@ -53,38 +57,46 @@ Blueprint <-
        add_params = function(..., .overwrite = TRUE) {
            param_list <- dots(...)
            param_names <- names(param_list)
-           constructed_params <- map(param_names, function(.pn) {
-            param_info <- param_list[[.pn]]
+           # clear out any null parameters
+           null_indices <- purrr::map_lgl(param_list, is.null)
+           to_remove <- param_names[null_indices]
+           purrr::walk(to_remove, function(.x) {
+             private$parameters[[.x]] <- NULL
+           })
+           param_list <- param_list[!null_indices]
+           param_names <- param_names[!null_indices]
+           if (!length(param_list)) {
+             return(invisible())
+           }
+           constructed_params <- map2(param_list, param_names, function(param_info, .pn) {
+              # if numeric assume shorthand value only
+              # CL = 4.5
+              if (is_bare_numeric(param_info)) {
+                return(parameter(param_info, name = .pn))
+              }
+              if (!inherits(param_info, "parameter")) {
+                stop(sprintf("incorrect specification for %s,
+                             please construct a parameter specification with `parameter()`", .pn))
+              }
 
-            if (is.null(param_info)) {
-              return(NULL)
-            }
-            # if numeric assume shorthand value only
-            # CL = 4.5
-            if (is_numeric(param_info)) {
-              return(param(param_info, .name = .pn, .comment = .pn))
-            }
-            # for now going to make the big assumption people will
-            # actually use param() to create full parameter specifications,
-            # maybe should create an actual class and check for it
-            # but for now going to trust
-            if (!is_list(param_info)) {
-              stop(sprintf("incorrect specification for %s, please use param()", .pn))
-            }
-              return(param_info)
-           })
-           constructed_params <- purrr::map2(constructed_params,
-                                             param_names,
-                                             .f = function(.param, .name) {
-             if (is.null(.param$name)) {
-               .param$name <- .name
+             # for now will force a name for all parameters, through the add_param
+             # call, eg add_param(<name> = parameter()), so even if a name
+             # is set, it will override.
+              param_info <- update(param_info, name = .pn)
+             # if link null, set equal to name
+             if (is.null(link(param_info))) {
+               param_info <- update(param_info, link = name(param_info))
              }
-             return(.param)
+             return(param_info)
            })
+           # in case anything was just given as a parameter block
+           constructed_param_names <- purrr::map(constructed_params, ~ name(.x))
            final_parameters <- modifyList(private$parameters,
-                                            set_names(constructed_params, param_names))
+                                            set_names(constructed_params, constructed_param_names)) %>%
+             discard(is.null)
            # if get a case where everything is overwritten set to empty list
-           if(is.null(final_parameters)) {
+           if (!length(final_parameters)) {
+             # don't want a named list just a bare empty list
              final_parameters <- list()
            }
            private$parameters <- final_parameters
@@ -105,7 +117,7 @@ Blueprint <-
          }
          return(private$parameters)
        },
-       add_heirarchy = function(...){
+       add_heirarchies = function(...){
          # TODO: currently basically add_param but tweaked to save to omega - should refactor
            omega_list <- dots(...)
            omega_names <- names(omega_list)
@@ -121,8 +133,8 @@ Blueprint <-
             }
             # if numeric assume shorthand value only
             # CL = 4.5
-            if (is_numeric(omega_info)) {
-              return(omega_param(omega_info, .fix = FALSE))
+            if (is_bare_numeric(omega_info)) {
+              return(omega_param(omega_info, fix = FALSE))
             }
             # for now going to make the big assumption people will
             # actually use block()/omega_param to create full omegas specifications,
@@ -134,10 +146,25 @@ Blueprint <-
               return(omega_info)
            })
            final_omegas <- modifyList(private$omegas,
-                                            set_names(constructed_omegas, omega_names))
+                                            set_names(constructed_omegas, omega_names)) %>%
+             discard(is.null)
            # if get a case where everything is overwritten set to empty list
-           if(is.null(final_omegas)) {
+           if (!length(final_omegas)) {
+             # don't want a named list just a bare empty list
              final_omegas <- list()
+           }
+           block_names <- final_omegas %>%
+             keep(~ .x$block) %>%
+             map(~ .x$params) %>%
+             flatten()
+           diag_names <- final_omegas %>%
+             discard(~ .x$block) %>%
+             names(.)
+
+           both_names <- intersect(block_names, diag_names)
+           if (length(both_names)) {
+             stop(glue::glue("detected omega elements in both a diagonal and block element for: {params}",
+                             params = paste0(both_names, collapse = ", ")))
            }
            private$omegas <- final_omegas
            return(names(constructed_omegas))
@@ -158,7 +185,7 @@ Blueprint <-
            }
            # if numeric assume shorthand value only
            # CL = 4.5
-           if (is_numeric(sigma_info)) {
+           if (is_bare_numeric(sigma_info)) {
              return(sigma_param(sigma_info, FALSE, .comment = .pn))
            }
            # for now going to make the big assumption people will
@@ -179,9 +206,10 @@ Blueprint <-
            return(.sigma)
          })
          final_sigmas <- modifyList(private$sigmas,
-                                    set_names(constructed_sigmas, sigma_names))
+                                    set_names(constructed_sigmas, sigma_names)) %>%
+           discard(is.null)
          # if get a case where everything is overwritten set to empty list
-         if(is.null(final_sigmas)) {
+         if (!length(final_sigmas)) {
            final_sigmas <- list()
          }
          private$sigmas <- final_sigmas
@@ -205,7 +233,7 @@ Blueprint <-
          whisker::whisker.render(self$template,
                         modifyList(settings,
                                    list(
-                                     equations = private$create_equations(self$get_all_elements()),
+                                     equations = private$equation_mapper(self$get_all_elements()),
                                      input = paste0(names(private$dat), collapse = " "),
                                      data = private$datpath
                                    )),
@@ -243,6 +271,6 @@ Blueprint <-
        parameters = list(),
        omegas = list(),
        sigmas = list(),
-       create_equations = NULL
+       equation_mapper = NULL
      )
 )

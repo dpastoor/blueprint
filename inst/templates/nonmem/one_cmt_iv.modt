@@ -37,7 +37,7 @@ $SIGMA
 $ERROR
 
 IPRED=F
-Y = IPRED*{{sigma_parameterization}}
+Y = IPRED*(1 + PROP) + ADD
 
 {{#estimation_methods}}
 {{> estimation_method}}
