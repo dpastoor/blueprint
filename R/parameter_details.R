@@ -51,3 +51,36 @@ update.parameter <- function(x, ...) {
   }
   modifyList(x, update_elements)
 }
+
+
+value.parameter <- function (x) {
+  x$value
+}
+
+
+lower_bound.parameter <- function (x) {
+  x$lower_bound
+}
+
+
+upper_bound.parameter <- function (x) {
+  x$upper_bound
+}
+
+
+link.parameter <- function (x) {
+  x$link
+}
+
+
+name.parameter <- function (x) {
+  x$name
+}
+
+fixed.parameter <- function (x) {
+  x$fixed
+}
+
+covariate_relationships.parameter <- function (x) {
+  x$covariate_relationships
+}
