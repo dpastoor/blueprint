@@ -4,7 +4,8 @@ equation_derivations = function(type) {
          nonmem = derive_equations_nonmem
          )
 }
-#' derive equations for nonmem
+
+# derive equations for nonmem
 derive_equations_nonmem <- function(elements) {
   params <- elements$parameters
   omegas <- elements$omegas
@@ -44,7 +45,7 @@ derive_equations_nonmem <- function(elements) {
   return(purrr::flatten(list(tvs, fulls, nofulls)))
 }
 
-#' derive equations
+# derive equations
 derive_equations_mrgsolve <- function(elements) {
   params <- elements$parameters
   omegas <- elements$omegas
