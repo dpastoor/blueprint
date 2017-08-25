@@ -1,9 +1,9 @@
 context("blueprint")
 
-cl_def <- Parameter$new(5, name = "CL")
-cl_def_comment <- Parameter$new(value = 5, name = "CL", comment = "TVCL; (L/hr)")
-v_def <- Parameter$new(value = 48.2, name = "V", comment = "TVV; (L)", lower_bound = 0, upper_bound = 200)
-cl_def_fixed <- Parameter$new(value = 5, name = "CL", comment = "TVCL; (L/hr)", fixed = TRUE)
+cl_def <- parameter(5, name = "CL")
+cl_def_comment <- parameter(value = 5, name = "CL", comment = "TVCL; (L/hr)")
+v_def <- parameter(value = 48.2, name = "V", comment = "TVV; (L)", lower_bound = 0, upper_bound = 200)
+cl_def_fixed <- parameter(value = 5, name = "CL", comment = "TVCL; (L/hr)", fixed = TRUE)
 
 describe("Blueprint", {
   it("can take a shorthand parameter definition", {

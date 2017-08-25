@@ -7,9 +7,9 @@ eq_template <- "
 "
 
 describe("nonmem blueprint", {
-  cl <- Parameter$new(1.5, name = "CL", comment = "mg/L")
-  v <- Parameter$new(14.5, name = "V", comment = "mg/L")
-  ka <- Parameter$new(0.5, name = "KA", comment = "1/hr")
+  cl <- parameter(1.5, name = "CL", comment = "mg/L")
+  v <- parameter(14.5, name = "V", comment = "mg/L")
+  ka <- parameter(0.5, name = "KA", comment = "1/hr")
   blueprint <- Blueprint$new("nonmem")
   blueprint$add_params(CL = cl, V = v, KA = ka)
   blueprint$template <- eq_template
