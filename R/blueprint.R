@@ -75,25 +75,24 @@ Blueprint <-
               # if numeric assume shorthand value only
               # CL = 4.5
               if (is_numeric(param_info)) {
-                return(Parameter$new(param_info, name = .pn))
+                return(parameter(param_info, name = .pn))
               }
-              if (!("Parameter" %in% class(param_info))) {
+              if (!inherits(param_info, "parameter")) {
                 stop(sprintf("incorrect specification for %s,
-                             please construct a parameter specification with Parameter$new()", .pn))
+                             please construct a parameter specification with `parameter()`", .pn))
               }
-             param_info <- param_info$clone()
                # if a parameter name was set, should set that name, so can override pre-specified param names
-              if (.pn != "") {
-                param_info$set_name(.pn)
+              if (is.null(name(param_info))) {
+                param_info <- update(param_info, name = .pn)
               }
              # if link null, set equal to name
-             if (is.null(param_info$get_link())) {
-               param_info$set_link(.pn)
+             if (is.null(link(param_info))) {
+               param_info <- update(param_info, link = name(param_info))
              }
              return(param_info)
            })
            # in case anything was just given as a parameter block
-           constructed_param_names <- purrr::map(constructed_params, ~ .x$get_name())
+           constructed_param_names <- purrr::map(constructed_params, ~ name(.x))
            final_parameters <- modifyList(private$parameters,
                                             set_names(constructed_params, constructed_param_names)) %>%
              discard(is.null)
