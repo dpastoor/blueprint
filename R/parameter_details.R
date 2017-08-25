@@ -53,6 +53,7 @@ parameter <- function(
 
 #' @rdname update
 #' @method update parameter
+#' @importFrom utils modifyList
 #' @export
 update.parameter <- function(x, ...) {
   update_elements <- dots(...)
