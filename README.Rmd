@@ -1,3 +1,9 @@
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/dpastoor/blueprint?branch=master&svg=true)](https://ci.appveyor.com/project/dpastoor/blueprint)
+
+[![Travis build status](https://travis-ci.org/dpastoor/blueprint.svg?branch=master)](https://travis-ci.org/dpastoor/blueprint)
+
+[![Coverage status](https://codecov.io/gh/dpastoor/blueprint/branch/master/graph/badge.svg)](https://codecov.io/github/dpastoor/blueprint?branch=master)
+
 README
 =======
 

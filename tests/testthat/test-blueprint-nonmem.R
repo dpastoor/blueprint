@@ -19,18 +19,18 @@ describe("nonmem blueprint", {
                  "\n  CL = THETA(1)\n  V = THETA(2)\n  KA = THETA(3)\n")
   })
   it("can handle a parameter with diagonal random effect heirarchy", {
-    blueprint$add_heirarchy(CL = 0.4)
+    blueprint$add_heirarchies(CL = 0.4)
     expect_equal(blueprint$render(),
                  "\n  TVCL = THETA(1)\n  CL = TVCL*EXP(ETA(1))\n  V = THETA(2)\n  KA = THETA(3)\n")
   })
 
   it("can handle a parameter with block random effect heirarchy", {
     # fails as adds 2 CL's so should error
-    expect_error(blueprint$add_heirarchy(bl = block(0.1, 0.01, 0.1, .params = c("CL", "V"))))
+    expect_error(blueprint$add_heirarchy(bl = block(0.1, 0.01, 0.1, param_names = c("CL", "V"))))
     # can clear clearance
-    blueprint$add_heirarchy(CL = NULL)
+    blueprint$add_heirarchies(CL = NULL)
     expect_equal(blueprint$get_all_elements()$omegas, list())
-    blueprint$add_heirarchy(bl = block(0.1, 0.01, 0.1, .params = c("CL", "V")))
+    blueprint$add_heirarchies(bl = block(0.1, 0.01, 0.1, param_names = c("CL", "V")))
     expect_equal(blueprint$render(),
                  "\n  TVCL = THETA(1)\n  TVV = THETA(2)\n  CL = TVCL*EXP(ETA(1))\n  V = TVV*EXP(ETA(2))\n  KA = THETA(3)\n")
   })

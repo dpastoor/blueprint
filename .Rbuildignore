@@ -1,3 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 spec
+^appveyor\.yml$
+^\.travis\.yml$
+^codecov\.yml$
