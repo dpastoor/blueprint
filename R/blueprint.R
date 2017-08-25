@@ -14,7 +14,7 @@ Blueprint <-
          }
          if (!is.null(type)) {
           self$partials <- load_partials(type)
-          private$create_equations <- equation_derivations(type)
+          private$equation_mapper <- equation_derivations(type)
          } else {
            message("no type specified, no pre-loaded templates initialized")
          }
@@ -236,7 +236,7 @@ Blueprint <-
          whisker::whisker.render(self$template,
                         modifyList(settings,
                                    list(
-                                     equations = private$create_equations(self$get_all_elements()),
+                                     equations = private$equation_mapper(self$get_all_elements()),
                                      input = paste0(names(private$dat), collapse = " "),
                                      data = private$datpath
                                    )),
@@ -274,6 +274,6 @@ Blueprint <-
        parameters = list(),
        omegas = list(),
        sigmas = list(),
-       create_equations = NULL
+       equation_mapper = NULL
      )
 )
