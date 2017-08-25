@@ -1,6 +1,7 @@
 #' base blueprint class
 #' @importFrom R6 R6Class
-#' @importFrom purrr map map2 is_numeric is_list set_names map_dbl map_lgl discard keep flatten
+#' @importFrom purrr map map2 is_list set_names map_dbl map_lgl discard keep flatten
+#' @importFrom rlang is_bare_numeric
 #' @export
 Blueprint <-
   R6::R6Class("blueprint",
@@ -30,14 +31,10 @@ Blueprint <-
             }
             # if numeric assume shorthand value only
             # CL = 4.5
-            if (is_numeric(param_info)) {
-              return(const(param_info, .comment = .pn))
+            if (is_bare_numeric(param_info)) {
+              return(const(param_info, comment = .pn))
             }
-            # for now going to make the big assumption people will
-            # actually use param() to create full parameter specifications,
-            # maybe should create an actual class and check for it
-            # but for now going to trust
-            if (!is_list(param_info)) {
+            if (!inherits(param_info, "const")) {
               stop(sprintf("incorrect specification for %s, please use const()", .pn))
             }
               return(param_info)
@@ -74,7 +71,7 @@ Blueprint <-
            constructed_params <- map2(param_list, param_names, function(param_info, .pn) {
               # if numeric assume shorthand value only
               # CL = 4.5
-              if (is_numeric(param_info)) {
+              if (is_bare_numeric(param_info)) {
                 return(parameter(param_info, name = .pn))
               }
               if (!inherits(param_info, "parameter")) {
@@ -120,7 +117,7 @@ Blueprint <-
          }
          return(private$parameters)
        },
-       add_heirarchy = function(...){
+       add_heirarchies = function(...){
          # TODO: currently basically add_param but tweaked to save to omega - should refactor
            omega_list <- dots(...)
            omega_names <- names(omega_list)
@@ -136,8 +133,8 @@ Blueprint <-
             }
             # if numeric assume shorthand value only
             # CL = 4.5
-            if (is_numeric(omega_info)) {
-              return(omega_param(omega_info, .fix = FALSE))
+            if (is_bare_numeric(omega_info)) {
+              return(omega_param(omega_info, fix = FALSE))
             }
             # for now going to make the big assumption people will
             # actually use block()/omega_param to create full omegas specifications,
@@ -188,7 +185,7 @@ Blueprint <-
            }
            # if numeric assume shorthand value only
            # CL = 4.5
-           if (is_numeric(sigma_info)) {
+           if (is_bare_numeric(sigma_info)) {
              return(sigma_param(sigma_info, FALSE, .comment = .pn))
            }
            # for now going to make the big assumption people will
