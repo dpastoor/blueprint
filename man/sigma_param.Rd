@@ -4,14 +4,14 @@
 \alias{sigma_param}
 \title{diagonal values}
 \usage{
-sigma_param(.value, .fix = FALSE, .comment = NULL)
+sigma_param(value, fix = FALSE, comment = NULL)
 }
 \arguments{
-\item{.value}{value}
+\item{value}{value}
 
-\item{.fix}{whether fixed DEFAULT: FALSE}
+\item{fix}{whether fixed DEFAULT: FALSE}
 
-\item{.comment}{comment}
+\item{comment}{comment}
 }
 \description{
 diagonal values
