@@ -9,7 +9,8 @@ bounds_check <- function(value, .lb, .ub) {
   return(TRUE)
 }
 
-#' @title create a parameter
+#' create a parameter
+#'
 #' @param value value of parameter
 #' @param name name of parameter, Default: NULL
 #' @param comment comments about the parameter, Default: NULL
@@ -51,6 +52,7 @@ parameter <- function(
     return(initialized)
 }
 
+#' update a parameter
 #' @rdname update
 #' @method update parameter
 #' @importFrom utils modifyList
@@ -65,52 +67,58 @@ update.parameter <- function(x, ...) {
   modifyList(x, update_elements)
 }
 
-
+#' get the value for a parameter
 #' @rdname value
 #' @method value parameter
 #' @export
-value.parameter <- function (x) {
+value.parameter <- function (x, ...) {
   x$value
 }
 
+#' get the lower bound for a parameter
 #' @rdname lower_bound
 #' @method lower_bound parameter
 #' @export
-lower_bound.parameter <- function (x) {
+lower_bound.parameter <- function (x, ...) {
   x$lower_bound
 }
 
+#' get the upper bound for a parameter
 #' @rdname upper_bound
 #' @method upper_bound parameter
 #' @export
-upper_bound.parameter <- function (x) {
+upper_bound.parameter <- function (x, ...) {
   x$upper_bound
 }
 
+#' get the link for a parameter
 #' @rdname link
 #' @method link parameter
 #' @export
-link.parameter <- function (x) {
+link.parameter <- function (x, ...) {
   x$link
 }
 
+#' get the name of the parameter
 #' @rdname name
 #' @method name parameter
 #' @export
-name.parameter <- function (x) {
+name.parameter <- function (x, ...) {
   x$name
 }
 
+#' get whether a parameter is fixed
 #' @rdname fixed
 #' @method fixed parameter
 #' @export
-fixed.parameter <- function (x) {
+fixed.parameter <- function (x, ...) {
   x$fixed
 }
 
+#' get covariate relationships for a parameter
 #' @rdname covariate_relationships
 #' @method covariate_relationships parameter
 #' @export
-covariate_relationships.parameter <- function (x) {
+covariate_relationships.parameter <- function (x, ...) {
   x$covariate_relationships
 }
