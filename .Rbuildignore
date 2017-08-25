@@ -4,3 +4,5 @@ spec
 ^appveyor\.yml$
 ^\.travis\.yml$
 ^codecov\.yml$
+^README\.Rmd$
+docs/
