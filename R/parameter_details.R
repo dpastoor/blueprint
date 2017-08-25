@@ -44,7 +44,7 @@ value.parameter <- function(x) {
 
 update.parameter <- function(x, ...) {
   update_elements <- dots(...)
-  not_present <- setdiff(update_elements, x)
+  not_present <- setdiff(names(update_elements), names(x))
   if (length(not_present)) {
     stop(glue::glue("the following update elements are invalid:
                     {paste0(not_present, collapse = ', ')} "))
