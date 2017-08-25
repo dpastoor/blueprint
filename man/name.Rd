@@ -7,12 +7,15 @@
 \usage{
 name(x, ...)
 
-\method{name}{parameter}(x)
+\method{name}{parameter}(x, ...)
 }
 \arguments{
 \item{x}{parameter}
 
 \item{...}{other arguments}
+}
+\description{
+get the name of the parameter
 }
 \examples{
 cl <- parameter(1.5, name = "TVCL")

@@ -7,12 +7,15 @@
 \usage{
 upper_bound(x, ...)
 
-\method{upper_bound}{parameter}(x)
+\method{upper_bound}{parameter}(x, ...)
 }
 \arguments{
 \item{x}{parameter}
 
 \item{...}{other arguments}
+}
+\description{
+get the upper bound for a parameter
 }
 \examples{
 cl <- parameter(1.5, lower_bound = 0)

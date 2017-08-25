@@ -7,12 +7,15 @@
 \usage{
 link(x, ...)
 
-\method{link}{parameter}(x)
+\method{link}{parameter}(x, ...)
 }
 \arguments{
 \item{x}{parameter}
 
 \item{...}{other arguments}
+}
+\description{
+get the link for a parameter
 }
 \examples{
 cl <- parameter(1.5, name = "CL")

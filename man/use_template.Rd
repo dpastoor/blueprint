@@ -4,7 +4,12 @@
 \alias{use_template}
 \title{chainable method to set template}
 \usage{
-use_template(bp, .template)
+use_template(bp, template)
+}
+\arguments{
+\item{bp}{blueprint object}
+
+\item{template}{template to use}
 }
 \description{
 chainable method to set template

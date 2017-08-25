@@ -14,6 +14,9 @@ update(x, ...)
 
 \item{...}{other arguments}
 }
+\description{
+update a parameter
+}
 \examples{
 cl <- parameter(1.5)
 cl <- update(cl, lower_bound = 0)
