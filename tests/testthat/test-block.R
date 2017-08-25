@@ -2,7 +2,7 @@ context("block")
 
 describe("block() works", {
   it("can be initialized correctly", {
-    input <- block(0.4, 0.6, 0.09, .params = c("CL", "V"), correlation = TRUE)
+    input <- block(0.4, 0.6, 0.09, param_names = c("CL", "V"), correlation = TRUE)
     expect_equal(input, list(block = TRUE,
                              params = c("CL", "V"),
                              fix = FALSE,
@@ -19,7 +19,7 @@ describe("block() works", {
                                                         0.09),
                                                       .Dim = c(2L,
                                                                2L))),
-                  nomega = 2,
+                  num_params = 2,
                   comment = NULL
                   )
                  )
