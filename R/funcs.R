@@ -1,4 +1,5 @@
 #' chainable function to access add_params method
+#'
 #' @param bp blueprint object
 #' @param ... params to pass
 #' @export
@@ -9,6 +10,7 @@ parameters <- function(bp, ...) {
 }
 
 #' chainable method to add_constants
+#'
 #' @param bp blueprint object
 #' @param ... params to pass
 #' @export
@@ -19,6 +21,7 @@ constants <- function(bp, ...) {
 }
 
 #' chainable method to add heirarchies
+#'
 #' @param bp blueprint object
 #' @param ... params to pass
 #' @export
@@ -28,7 +31,8 @@ heirarchies <- function(bp, ...) {
   return(bp)
 }
 
-# chainable method to add_residual_error
+#' chainable method to add_residual_error
+#'
 #' @param bp blueprint object
 #' @param ... params to pass
 #' @export
@@ -38,7 +42,8 @@ residual_error <- function(bp, ...) {
   return(bp)
 }
 
-# chainable method to set the data
+#' chainable method to set the data
+#'
 #' @param bp blueprint object
 #' @param data dataset
 #' @export
@@ -49,6 +54,7 @@ with_data <- function(bp, data) {
 }
 
 #' chainable method to set path to data file
+#'
 #' @param bp blueprint object
 #' @param path path for data file for a control stream
 #' @export
@@ -59,6 +65,7 @@ from_path <- function(bp, path) {
 }
 
 #' chainable method to set template
+#'
 #' @param bp blueprint object
 #' @param template template to use
 #' @export
@@ -69,6 +76,7 @@ use_template <- function(bp, template) {
 }
 
 #' chainable method to render
+#'
 #' @param bp blueprint object
 #' @export
 render <- function(bp) {
