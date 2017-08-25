@@ -6,6 +6,11 @@
 \usage{
 constants(bp, ...)
 }
+\arguments{
+\item{bp}{blueprint object}
+
+\item{...}{params to pass}
+}
 \description{
 chainable method to add_constants
 }

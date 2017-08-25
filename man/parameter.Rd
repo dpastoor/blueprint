@@ -28,6 +28,9 @@ parameter(value, name = NULL, comment = NULL, lower_bound = -Inf,
 \value{
 object with class parameter
 }
+\description{
+create a parameter
+}
 \examples{
 cl <- parameter(1.5, "CL")
 V <- parameter(10.5, "TVV", lower_bound = 0, link = "V")

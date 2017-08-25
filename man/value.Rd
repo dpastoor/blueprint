@@ -7,12 +7,15 @@
 \usage{
 value(x, ...)
 
-\method{value}{parameter}(x)
+\method{value}{parameter}(x, ...)
 }
 \arguments{
 \item{x}{parameter}
 
 \item{...}{other arguments}
+}
+\description{
+get the value for a parameter
 }
 \examples{
 cl <- parameter(1.5)

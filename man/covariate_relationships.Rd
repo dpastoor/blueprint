@@ -7,12 +7,15 @@
 \usage{
 covariate_relationships(x, ...)
 
-\method{covariate_relationships}{parameter}(x)
+\method{covariate_relationships}{parameter}(x, ...)
 }
 \arguments{
 \item{x}{parameter}
 
 \item{...}{other arguments}
+}
+\description{
+get covariate relationships for a parameter
 }
 \examples{
 cl <- parameter(1.5, covariate_relationships = list(WT = ("WT/70")))

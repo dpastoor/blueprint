@@ -7,12 +7,15 @@
 \usage{
 lower_bound(x, ...)
 
-\method{lower_bound}{parameter}(x)
+\method{lower_bound}{parameter}(x, ...)
 }
 \arguments{
 \item{x}{parameter}
 
 \item{...}{other arguments}
+}
+\description{
+get the lower bound for a parameter
 }
 \examples{
 cl <- parameter(1.5)

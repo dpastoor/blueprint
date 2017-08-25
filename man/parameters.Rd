@@ -6,6 +6,11 @@
 \usage{
 parameters(bp, ...)
 }
+\arguments{
+\item{bp}{blueprint object}
+
+\item{...}{params to pass}
+}
 \description{
 chainable function to access add_params method
 }

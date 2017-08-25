@@ -7,12 +7,15 @@
 \usage{
 fixed(x, ...)
 
-\method{fixed}{parameter}(x)
+\method{fixed}{parameter}(x, ...)
 }
 \arguments{
 \item{x}{parameter}
 
 \item{...}{other arguments}
+}
+\description{
+get whether a parameter is fixed
 }
 \examples{
 cl <- parameter(1.5, fixed = TRUE)

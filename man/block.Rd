@@ -21,7 +21,7 @@ block(..., param_names, fix = FALSE, correlation = FALSE, comment = NULL)
 block matrix
 }
 \examples{
-block(0.04, 0.01, 0.09, .params = vars(CL, V))
+block(0.04, 0.01, 0.09, param_names = c("CL", "V"))
 # can also set as correlation matrix
-block(0.04, 0.61, 0.09, .params = c("CL", "V"), correlation = TRUE)
+block(0.04, 0.61, 0.09, param_names = c("CL", "V"), correlation = TRUE)
 }

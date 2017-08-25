@@ -4,7 +4,12 @@
 \alias{from_path}
 \title{chainable method to set path to data file}
 \usage{
-from_path(bp, .path)
+from_path(bp, path)
+}
+\arguments{
+\item{bp}{blueprint object}
+
+\item{path}{path for data file for a control stream}
 }
 \description{
 chainable method to set path to data file
