@@ -6,9 +6,23 @@ bounds_check <- function(value, .lb, .ub) {
     if (!dplyr::between(value, .lb, .ub)) {
       stop(glue::glue("bounds must enclose value {.value}"))
     }
-  return(invisible())
+  return(TRUE)
 }
 
+#' @title create a parameter
+#' @param value value of parameter
+#' @param name name of parameter, Default: NULL
+#' @param comment comments about the parameter, Default: NULL
+#' @param lower_bound lower bound, Default: -Inf
+#' @param upper_bound upper bound, Default: Inf
+#' @param fixed whether parameter should be fixed, Default: FALSE
+#' @param covariate_relationships covariate relationships, Default: NULL
+#' @param link name to link to a heirarchy, Default: name
+#' @return object with class parameter
+#' @examples
+#' cl <- parameter(1.5, "CL")
+#' V <- parameter(10.5, "TVV", lower_bound = 0, link = "V")
+#' @rdname parameter
 #' @export
 parameter <- function(
                   value,
@@ -37,11 +51,9 @@ parameter <- function(
     return(initialized)
 }
 
-
-value.parameter <- function(x) {
-  x$value
-}
-
+#' @rdname update
+#' @method update parameter
+#' @export
 update.parameter <- function(x, ...) {
   update_elements <- dots(...)
   not_present <- setdiff(names(update_elements), names(x))
@@ -53,34 +65,51 @@ update.parameter <- function(x, ...) {
 }
 
 
+#' @rdname value
+#' @method value parameter
+#' @export
 value.parameter <- function (x) {
   x$value
 }
 
-
+#' @rdname lower_bound
+#' @method lower_bound parameter
+#' @export
 lower_bound.parameter <- function (x) {
   x$lower_bound
 }
 
-
+#' @rdname upper_bound
+#' @method upper_bound parameter
+#' @export
 upper_bound.parameter <- function (x) {
   x$upper_bound
 }
 
-
+#' @rdname link
+#' @method link parameter
+#' @export
 link.parameter <- function (x) {
   x$link
 }
 
-
+#' @rdname name
+#' @method name parameter
+#' @export
 name.parameter <- function (x) {
   x$name
 }
 
+#' @rdname fixed
+#' @method fixed parameter
+#' @export
 fixed.parameter <- function (x) {
   x$fixed
 }
 
+#' @rdname covariate_relationships
+#' @method covariate_relationships parameter
+#' @export
 covariate_relationships.parameter <- function (x) {
   x$covariate_relationships
 }
