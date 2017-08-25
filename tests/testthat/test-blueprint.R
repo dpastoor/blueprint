@@ -26,13 +26,13 @@ describe("Blueprint", {
     blueprint$add_params(TVCL = cl_def)
     cl <- blueprint$get_param("TVCL")
     expect_false(isTRUE(all.equal(cl, cl_def)))
-    expect_equal(cl$get_link(), "CL")
-    expect_equal(cl$get_name(), "TVCL")
+    expect_equal(link(cl), "CL")
+    expect_equal(name(cl), "TVCL")
   })
 
   it("can take a partial parameter definition", {
     blueprint <- Blueprint$new()
-    blueprint$add_params(CL = Parameter$new(5, comment = "TVCL; (L/hr)"))
+    blueprint$add_params(CL = parameter(5, comment = "TVCL; (L/hr)"))
     cl <- blueprint$get_param("CL")
     expect_equal(cl, cl_def_comment)
   })

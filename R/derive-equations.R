@@ -6,10 +6,11 @@ equation_derivations = function(type) {
 }
 #' derive equations for nonmem
 derive_equations_nonmem <- function(elements) {
-  params <- map(elements$parameters, ~ .x$get_all_information())
+  params <- elements$parameters
   omegas <- elements$omegas
 
-  param_names <- purrr::map_chr(params, ~ .x$link)
+  # this should be refactored to links for clarity
+  param_names <- purrr::map_chr(params, ~ link(.x))
   if (length(omegas)) {
     omega_names <- purrr::map2(omegas, names(omegas), function(.omega, .name) {
       #
@@ -48,7 +49,7 @@ derive_equations_mrgsolve <- function(elements) {
   params <- elements$parameters
   omegas <- elements$omegas
 
-  param_names <- purrr::map_chr(params, ~ .x$link)
+  param_names <- purrr::map_chr(params, ~ link(.x))
   omega_names <- purrr::map2(omegas, names(omegas), function(.omega, .name) {
     #
     if (.omega$block) {
