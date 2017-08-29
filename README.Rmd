@@ -10,67 +10,126 @@ BLUEPRINT
 Create a model blueprint, using a consistent API across modeling platforms.
 
 ```{r}
-blueprint <- make_blueprint("nonmem")
+blueprint <- Blueprint$new("nonmem")
+```
+
+Blueprints are combined with templates (see below for specifics) to scaffold
+out model control streams.
+
+There are default templates for `nonmem` and `mrgsolve`, however arbitrary
+user defined templates can be easily used as well.
+
+```{r}
+templates <- load_templates("nonmem")
+```
+
+## Core Concepts
+
+Blueprint provides a pipeline-based API for declaring the model components. In
+general, the nomenclature draws from a general terminology to NLMEM. Specifically,
+there are constants, parameters (thetas) and heirarchies (omega/sigma). 
+These constants, parameters, and heirarchies are combined together to inform the
+model structure. 
+
+The required components for each piece are as minimal as possible, generally
+a value and a name, though this also is extended to incorporate other 
+settings common, such as lower and upper bound, and whether the element should be
+fixed, comments (such as units).
+
+### parameters 
+
+#### basic declaration
+
+```{r}
+cl <- parameter(1.5)
+cl
+```
+
+#### full declaration
+
+```{r}
+cl <- parameter(1.5, 
+  "CL",
+  lower_bound = 0, 
+  upper_bound = 100,
+  fixed = FALSE,
+  link = "CL"
+)
+cl
+```
+
+### Heirarchies
+
+Heirarchies can either be diagonal or block elements. Diagonal elements
+are specified via `omega_param` and block elements via `block`. The
+heirarchical parameter is **link**ed to a parameter via a name. 
+
+```{r }
+b1 <- block(0.04, 0.01, 0.09, param_names = c("CL", "V"))
+b1
+```
+
+Information about the raw matrix, as well as the resultant structure
+is stored.
+
+```{r}
+b1$matrix
+cat(b1$value)
+```
+### Helpers
+
+In addition to the model structure, a number of helpers to track and inject
+other information required by the softwares are available.
+
+* `with_data` - dataset to be modeled, can extract column names, calculations, etc
+* `from_path` - path to data to inject into the input of a control stream.
+
+## Basic example
+
+```{r}
+one_cmpt_iv <- blueprint %>% 
+  # use the one cmt iv template
+  use_template(templates$one_cmt_iv) %>%
+  # add clearance and volume parameters
+  parameters(CL = parameter(5,  
+                    lower_bound = 0.01, 
+                    upper_bound = 10),
+         V = parameter(34, lower_bound = 0.1)) %>%
+  with_data(head(Theoph)) %>%
+  from_path("path/to/my_data.csv") 
 ```
 
 ```{r}
-one_cmt <- blueprint %>% 
+one_cmpt_iv %>% render() %>% cat()
+```
+
+
+```{r}
+one_cmt_block <- one_cmpt_iv %>%
+  heirarchies(b1 = block(0.04, 0.01, 0.09, param_names = c("CL", "V")))
+
+one_cmt_block %>% render() %>% cat()
+
+one_cmt_diag <- one_cmpt_iv %>%
+  heirarchies(CL = 0.04, V = 0.09)
+
+one_cmt_diag %>% render() %>% cat()
+
+```
+
+## Eventual extensions
+
+even more standard templates
+
+```{r, include = FALSE}
+opts_chunk$set(eval = FALSE)
+```
+
+query language sugar for templates
+
+```{r}
+blueprint %>%
   ode_model(cmt = 1, depot = 1) %>%
-  parameterize("CL") %>% 
-  params(CL = 1.6, V = 14.3, KA = 0.8)
-```
-
-```{r}
-one_cmt_block <- one_cmt  %>%
-  heirarchy(block(CL = 0.1, V = 0.04, CL_V = 0.01), KA = 0.1) # add a block omega for Cl/V and a separate omega for KA
-
-one_cmt_diag <- one_cmt  %>%
-  heirarchy(CL = 0.1, V = 0.04, KA = 0.1) # add diagonal matrix for Cl, V, KA
-```
-
-At this point, we may want to try different residual error structures
-
-```{r}
-one_cmt_block_combined <- one_cmt_block %>% residual_error(add = 1, prop=0.04)
-one_cmt_block_prop <- one_cmt_block %>% residual_error(prop=0.04)
-```
-
-Or both can apply something to multiple models
-
-```{r}
-model_list <- c(one_cmt_block, one_cmt_diag)
-
-map(model_list, function(model) {
-  model %>% residual_error(prop=0.04)
-})
-```
-
-
-This iterative construction is the same as:
-
-```{r}
-make_blueprint("mrgsolve") %>% 
-  ode_model(cmt = 1, depot = 1) %>%
-  parameterize("CL") %>% 
-  params(CL = 1.6, V = 14.3, KA = 0.8) %>%
-  heirarchy(block(CL = 0.1, V = 0.04, CL_V = 0.01), KA = 0.1) %>% 
-  residual_error(prop=0.04)
-```
-
-As the arguments can be chained, the later steps can be created as a functional blueprint
-
-```{r}
-one_cmt_creator <- . %>% 
-  ode_model(cmt = 1, depot = 1) %>%
-  parameterize("CL") %>% 
-  params(CL = 1.6, V = 14.3, KA = 0.8) %>%
-  heirarchy(block(CL = 0.1, V = 0.04, CL_V = 0.01), KA = 0.1) %>% 
-  residual_error(prop=0.04)
-```
-
-
-```{r}
-make_blueprint("mrgsolve") %>% one_cmt_creator()
-make_blueprint("nonmem") %>% one_cmt_creator()
+  parameterize("CL") 
 ```
 
