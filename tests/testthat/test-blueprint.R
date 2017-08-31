@@ -56,4 +56,47 @@ describe("Blueprint", {
     expect_equal(length(blueprint$get_params()), 0)
     expect_true(is.list(blueprint$get_params()))
   })
+
+  it("can handle constants", {
+    blueprint <- Blueprint$new()
+    blueprint$add_constants(STD_WT = 70)
+
+    expect_equal(blueprint$get_all_elements()$constants,
+                 structure(list(
+                   STD_WT = structure(
+                     list(
+                       value = 70,
+                       comment = "STD_WT",
+                       name = "STD_WT"
+                     ),
+                     .Names = c("value", "comment", "name"),
+                     class = "const"
+                   )
+                 ), .Names = "STD_WT"))
+  blueprint$add_constants(CL_WT = const(0.75, "allometric exponent"))
+  expect_equal(blueprint$get_all_elements()$constants,
+               structure(
+                 list(
+                   STD_WT = structure(
+                     list(
+                       value = 70,
+                       comment = "STD_WT",
+                       name = "STD_WT"
+                     ),
+                     .Names = c("value", "comment", "name"),
+                     class = "const"
+                   ),
+                   CL_WT = structure(
+                     list(
+                       value = 0.75,
+                       comment = "allometric exponent",
+                       name = "CL_WT"
+                     ),
+                     .Names = c("value", "comment", "name"),
+                     class = "const"
+                   )
+                 ),
+                 .Names = c("STD_WT", "CL_WT")
+               ))
+  })
 })
