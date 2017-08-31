@@ -4,10 +4,12 @@
 \alias{omega_param}
 \title{diagonal values}
 \usage{
-omega_param(value, fix = FALSE, comment = NULL)
+omega_param(value, link, fix = FALSE, comment = NULL)
 }
 \arguments{
 \item{value}{value}
+
+\item{link}{link parameter name}
 
 \item{fix}{whether fixed DEFAULT: FALSE}
 

@@ -4,10 +4,12 @@
 \alias{sigma_param}
 \title{diagonal values}
 \usage{
-sigma_param(value, fix = FALSE, comment = NULL)
+sigma_param(value, name, fix = FALSE, comment = NULL)
 }
 \arguments{
 \item{value}{value}
+
+\item{name}{name}
 
 \item{fix}{whether fixed DEFAULT: FALSE}
 
@@ -15,4 +17,8 @@ sigma_param(value, fix = FALSE, comment = NULL)
 }
 \description{
 diagonal values
+}
+\details{
+PROP, ADD are specially recognized names to design the residual
+error structure, else, will need to code it oneself
 }
