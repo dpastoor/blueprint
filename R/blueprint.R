@@ -140,8 +140,8 @@ Blueprint <-
             # actually use block()/omega_param to create full omegas specifications,
             # maybe should create an actual class and check for it
             # but for now going to trust
-            if (!is_list(omega_info)) {
-              stop(sprintf("incorrect specification for %s, please use omega_param()", .pn))
+            if (!inherits(omega_info, "omega")) {
+              stop(sprintf("incorrect specification for %s, please use omega_param() or block()", .pn))
             }
               return(omega_info)
            })
