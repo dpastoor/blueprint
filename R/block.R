@@ -45,15 +45,20 @@ omega_param <- function(value, link, fix = FALSE, comment = NULL) {
 }
 #' diagonal values
 #' @param value value
+#' @param name name
 #' @param fix whether fixed DEFAULT: FALSE
 #' @param comment comment
+#' @details
+#' PROP, ADD are specially recognized names to design the residual
+#' error structure, else, will need to code it oneself
 #' @export
-sigma_param <- function(value, fix = FALSE, comment = NULL) {
+sigma_param <- function(value, name, fix = FALSE, comment = NULL) {
   # note omega param takes param and value singular, vs the block
-  return(list(type = "diagonal",
+  output <- list(block = FALSE,
               fix = fix,
               correlation = FALSE,
               value = value,
-              comment = comment))
-
+              comment = comment)
+  class(output) <- "sigma"
+  return(output)
 }
