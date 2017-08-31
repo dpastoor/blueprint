@@ -11,7 +11,7 @@
 #' @export
 block <- function(..., param_names, fix = FALSE, correlation = FALSE, comment = NULL) {
   output_matrix <- mrgsolve::bmat(..., correlation = correlation)
-  return(list(block = TRUE,
+  output <- list(block = TRUE,
               params = param_names,
               fix = fix,
               correlation = correlation,
@@ -20,22 +20,27 @@ block <- function(..., param_names, fix = FALSE, correlation = FALSE, comment = 
               num_params = length(param_names),
               comment = comment
               )
-         )
+  class(output) <- c("omega", "block")
+  return(output)
 }
 
 
 #' diagonal values
 #' @param value value
+#' @param link link parameter name
 #' @param fix whether fixed DEFAULT: FALSE
 #' @param comment comment
 #' @export
-omega_param <- function(value, fix = FALSE, comment = NULL) {
+omega_param <- function(value, link, fix = FALSE, comment = NULL) {
   # note omega param takes param and value singular, vs the block
-  return(list(block = FALSE,
-              fix = fix,
-              correlation = FALSE,
-              value = value,
-              comment = comment))
+  output <- list(block = FALSE,
+       link = link,
+       fix = fix,
+       correlation = FALSE,
+       value = value,
+       comment = comment)
+  class(output) <- "omega"
+  return(output)
 
 }
 #' diagonal values
