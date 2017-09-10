@@ -1,3 +1,13 @@
+#' get the residual error equation
+#' @param elements residual error elements
+#' @param ipred the name for the IPRED variable
+#' @details
+#' currently supports ADD and PROP
+#' @examples
+#' get_residual_error_eqn("ADD", "IPRED")
+#' get_residual_error_eqn(c("ADD", "PROP"), "IPRED")
+#' get_residual_error_eqn(c("PROP"), "CP")
+#' @export
 get_residual_error_eqn <- function(elements, ipred) {
   SUPPORTED_ELEMENTS <- c("ADD", "PROP")
   if (!all(elements %in% SUPPORTED_ELEMENTS)) {
