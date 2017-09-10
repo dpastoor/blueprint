@@ -35,9 +35,8 @@ $SIGMA
 
 
 $ERROR
-
 IPRED=F
-Y = IPRED*(1 + PROP) + ADD
+Y = {{residual_error_eqn}}
 
 {{#estimation_methods}}
 {{> estimation_method}}
