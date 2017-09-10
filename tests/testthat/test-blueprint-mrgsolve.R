@@ -21,7 +21,7 @@ describe("mrgsolve blueprint", {
   it("can handle a parameter with diagonal random effect heirarchy", {
     blueprint$add_heirarchies(CL = 0.4)
     expect_equal(blueprint$render(),
-                 "\n  CL = TVCL*exp(ETA1)\n  V = TVV\n  KA = TVKA\n")
+                 "\n  TVCL = CL\n  CL = TVCL*exp(ETA1)\n  V = TVV\n  KA = TVKA\n")
   })
 
   it("can handle a parameter with block random effect heirarchy", {
@@ -32,6 +32,6 @@ describe("mrgsolve blueprint", {
     expect_equal(blueprint$get_all_elements()$omegas, list())
     blueprint$add_heirarchies(bl = block(0.1, 0.01, 0.1, param_names = c("CL", "V")))
     expect_equal(blueprint$render(),
-                 "\n  CL = TVCL*exp(ETA1)\n  V = TVV*exp(ETA2)\n  KA = TVKA\n")
+                 "\n  TVCL = CL\n  TVV = V\n  CL = TVCL*exp(ETA1)\n  V = TVV*exp(ETA2)\n  KA = TVKA\n")
   })
 })
