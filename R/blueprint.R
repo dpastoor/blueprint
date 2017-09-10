@@ -2,6 +2,7 @@
 #' @importFrom R6 R6Class
 #' @importFrom purrr map map2 is_list set_names map_dbl map_lgl discard keep flatten
 #' @importFrom rlang is_bare_numeric
+#' @importFrom glue glue
 #' @export
 Blueprint <-
   R6::R6Class("blueprint",
@@ -140,7 +141,7 @@ Blueprint <-
             # actually use block()/omega_param to create full omegas specifications,
             # maybe should create an actual class and check for it
             # but for now going to trust
-            if (!inherits(omega_info, "omega")) {
+            if (!inherits(omega_info, "omega") && !inherits(omega_info, "block")) {
               stop(sprintf("incorrect specification for %s, please use omega_param() or block()", .pn))
             }
               return(omega_info)
@@ -170,6 +171,8 @@ Blueprint <-
            return(names(constructed_omegas))
        },
        add_residual_error = function(...){
+        # support additive, additive + prop, and prop error to start
+         ACCEPTED_NAMES <- c("ADD", "PROP")
          # TODO: currently basically add_param but tweaked to save to sigma - should refactor
          sigma_list <- dots(...)
          sigma_names <- names(sigma_list)
@@ -177,23 +180,29 @@ Blueprint <-
          if (length(sigma_list) != length(sigma_names)) {
            stop("all elements must be named - even blocks!")
          }
-         constructed_sigmas <- map(sigma_names, function(.pn) {
-           sigma_info <- sigma_list[[.pn]]
-
+         constructed_sigmas <- map2(sigma_list, sigma_names, function(sigma_info, .pn) {
            if (is.null(sigma_info)) {
              return(NULL)
            }
            # if numeric assume shorthand value only
            # CL = 4.5
            if (is_bare_numeric(sigma_info)) {
-             return(sigma_param(sigma_info, .pn, FALSE, .comment = .pn))
+             if (!(.pn %in% ACCEPTED_NAMES)) {
+               stop(glue("the only residual error names currently supported are:
+                         {paste0(ACCEPTED_NAMES, collapse = ',')}"))
+             }
+             return(sigma_param(sigma_info, .pn, FALSE, comment = .pn))
            }
-           # for now going to make the big assumption people will
-           # actually use block()/sigma_param to create full sigmas specifications,
-           # maybe should create an actual class and check for it
-           # but for now going to trust
-           if (!inherits(sigma_info, "sigma")) {
-             stop(sprintf("incorrect specification for %s, please use sigma_sigma()", .pn))
+
+           if (!inherits(sigma_info, "sigma") && !inherits(sigma_info, "block")) {
+             stop(sprintf("incorrect specification for %s, please use sigma_param() or block()", .pn))
+           }
+           if (inherits(sigma_info, "block")) {
+             if (!all(names(sigma_info) %in% ACCEPTED_NAMES)) {
+               # improve this error message
+               stop(glue("the only residual error names currently supported are:
+                         {paste0(ACCEPTED_NAMES, collapse = ',')}"))
+             }
            }
            return(sigma_info)
          })
@@ -212,6 +221,19 @@ Blueprint <-
          if (!length(final_sigmas)) {
            final_sigmas <- list()
          }
+           block_names <- final_sigmas %>%
+             keep(~ .x$block) %>%
+             map(~ .x$params) %>%
+             flatten()
+           diag_names <- final_sigmas %>%
+             discard(~ .x$block) %>%
+             names(.)
+
+           both_names <- intersect(block_names, diag_names)
+           if (length(both_names)) {
+             stop(glue::glue("detected omega elements in both a diagonal and block element for: {params}",
+                             params = paste0(both_names, collapse = ", ")))
+           }
          private$sigmas <- final_sigmas
          return(names(constructed_sigmas))
        },
@@ -230,12 +252,14 @@ Blueprint <-
             stop("no template defined")
          }
          settings <- purrr::map(self$get_all_elements(), strip_names)
+         resid_error <- get_residual_error_eqn(purrr::flatten_chr(map(settings$sigmas, names)), "IPRED")
          whisker::whisker.render(self$template,
                         modifyList(settings,
                                    list(
                                      equations = private$equation_mapper(self$get_all_elements()),
                                      input = paste0(names(private$dat), collapse = " "),
-                                     data = private$datpath
+                                     data = private$datpath,
+                                     residual_error_eqn = resid_error
                                    )),
                         partials = self$partials
          )
