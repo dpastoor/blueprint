@@ -10,7 +10,7 @@ describe("block() works", {
                      num_params = 2L, comment = NULL), .Names = c("block", "params",
                                                                   "fix", "correlation",
                                                                   "matrix", "value", "num_params", "comment"
-                     ), class = c("omega", "block"))
+                     ), class = c("block"))
     expect_equal(input, output)
   })
 })

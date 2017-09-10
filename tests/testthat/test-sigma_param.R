@@ -7,12 +7,13 @@ describe("sigma_param() works", {
       structure(
         list(
           block = FALSE,
+          name = "PROP",
           fix = FALSE,
           correlation = FALSE,
           value = 0.04,
           comment = NULL
         ),
-        .Names = c("block", "fix",
+        .Names = c("block", "name", "fix",
                    "correlation", "value", "comment"),
         class = "sigma"
       )
