@@ -8,13 +8,19 @@ Blueprint <-
   R6::R6Class("blueprint",
      public = list(
        partials = NULL,
+       type = NULL,
        initialize = function(type = "nonmem") {
          # TODO: remove, just using this as a placeholder
          message(sprintf("initializing new blueprint of type: %s", type))
          if (missing(type)) {
            type <- NULL
          }
+         SUPPORTED_TYPES <- c("nonmem", "mrgsolve")
+         if (!(type %in% SUPPORTED_TYPES) && !is.null(type)) {
+           stop(glue("only support types: {paste0(SUPPORTED_TYPES, collapse = ',')}"))
+         }
          if (!is.null(type)) {
+          self$type <- type
           self$partials <- load_partials(type)
           private$equation_mapper <- equation_derivations(type)
          } else {
@@ -252,7 +258,12 @@ Blueprint <-
             stop("no template defined")
          }
          settings <- purrr::map(self$get_all_elements(), strip_names)
-         resid_error <- get_residual_error_eqn(purrr::flatten_chr(map(settings$sigmas, names)), "IPRED")
+         ipred <- ifelse(self$type == "mrgsolve", "CP", "IPRED")
+         resid_error <- get_residual_error_eqn(
+           purrr::flatten_chr(map(settings$sigmas, names)),
+           ipred,
+           self$type
+           )
          whisker::whisker.render(self$template,
                         modifyList(settings,
                                    list(
