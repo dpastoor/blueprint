@@ -25,6 +25,8 @@ block <- function(..., param_names, fix = FALSE, correlation = FALSE, comment = 
 }
 
 #' get the name of the parameter
+#' @param x obj
+#' @param ... additional args to pass
 #' @rdname names
 #' @method names block
 #' @export

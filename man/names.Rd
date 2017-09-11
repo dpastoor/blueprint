@@ -9,6 +9,11 @@
 
 \method{names}{sigma}(x, ...)
 }
+\arguments{
+\item{x}{obj}
+
+\item{...}{additional args to pass}
+}
 \description{
 get the name of the parameter
 
