@@ -4,12 +4,14 @@
 \alias{get_residual_error_eqn}
 \title{get the residual error equation}
 \usage{
-get_residual_error_eqn(elements, ipred)
+get_residual_error_eqn(elements, ipred, type)
 }
 \arguments{
 \item{elements}{residual error elements}
 
 \item{ipred}{the name for the IPRED variable}
+
+\item{type}{type of model, nonmem or mrgsolve}
 }
 \description{
 get the residual error equation
@@ -18,7 +20,7 @@ get the residual error equation
 currently supports ADD and PROP
 }
 \examples{
-get_residual_error_eqn("ADD", "IPRED")
-get_residual_error_eqn(c("ADD", "PROP"), "IPRED")
-get_residual_error_eqn(c("PROP"), "CP")
+get_residual_error_eqn("ADD", "IPRED", "nonmem")
+get_residual_error_eqn(c("ADD", "PROP"), "IPRED", "nonmem")
+get_residual_error_eqn(c("PROP"), "CP", "mrgsolve")
 }
