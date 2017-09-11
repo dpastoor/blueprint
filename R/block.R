@@ -20,10 +20,19 @@ block <- function(..., param_names, fix = FALSE, correlation = FALSE, comment = 
               num_params = length(param_names),
               comment = comment
               )
-  class(output) <- c("omega", "block")
+  class(output) <- c("block")
   return(output)
 }
 
+#' get the name of the parameter
+#' @param x obj
+#' @param ... additional args to pass
+#' @rdname names
+#' @method names block
+#' @export
+names.block <- function(x, ...) {
+  x$params
+}
 
 #' diagonal values
 #' @param value value
@@ -43,6 +52,7 @@ omega_param <- function(value, link, fix = FALSE, comment = NULL) {
   return(output)
 
 }
+
 #' diagonal values
 #' @param value value
 #' @param name name
@@ -55,10 +65,19 @@ omega_param <- function(value, link, fix = FALSE, comment = NULL) {
 sigma_param <- function(value, name, fix = FALSE, comment = NULL) {
   # note omega param takes param and value singular, vs the block
   output <- list(block = FALSE,
+              name = name,
               fix = fix,
               correlation = FALSE,
               value = value,
               comment = comment)
   class(output) <- "sigma"
   return(output)
+}
+
+#' get the name of the parameter
+#' @rdname names
+#' @method names sigma
+#' @export
+names.sigma <- function(x, ...) {
+  x$name
 }

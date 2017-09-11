@@ -6,6 +6,10 @@ eq_template <- "
 {{/equations}}
 "
 
+resid_error_template <- "
+Y = {{residual_error_eqn}}
+"
+
 describe("nonmem blueprint", {
   cl <- parameter(1.5, name = "CL", comment = "mg/L")
   v <- parameter(14.5, name = "V", comment = "mg/L")
@@ -35,4 +39,33 @@ describe("nonmem blueprint", {
                  "\n  TVCL = THETA(1)\n  TVV = THETA(2)\n  CL = TVCL*EXP(ETA(1))\n  V = TVV*EXP(ETA(2))\n  KA = THETA(3)\n")
   })
 
+})
+
+describe("residual error works for nonmem", {
+  blueprint <- Blueprint$new("nonmem")
+  blueprint$template <- resid_error_template
+  it("works for simple error structures", {
+  bp <- blueprint$clone()
+  bp$add_residual_error(ADD = 0.1)
+  expect_equal(bp$render(), "\nY = IPRED + EPS(1)\n")
+
+  bp <- blueprint$clone()
+  bp$add_residual_error(PROP = 0.1)
+  expect_equal(bp$render(), "\nY = IPRED*(1+IPRED*EPS(1))\n")
+  })
+  it("works iteratively in both directions", {
+  bp <- blueprint$clone()
+  bp$add_residual_error(ADD = 0.1)
+  expect_equal(bp$render(), "\nY = IPRED + EPS(1)\n")
+
+  bp$add_residual_error(PROP = 0.1)
+  expect_equal(bp$render(), "\nY = IPRED*(1+IPRED*EPS(2)) + EPS(1)\n")
+
+  bp <- blueprint$clone()
+  bp$add_residual_error(PROP = 0.1)
+  expect_equal(bp$render(), "\nY = IPRED*(1+IPRED*EPS(1))\n")
+
+  bp$add_residual_error(ADD = 0.1)
+  expect_equal(bp$render(), "\nY = IPRED*(1+IPRED*EPS(1)) + EPS(2)\n")
+  })
 })

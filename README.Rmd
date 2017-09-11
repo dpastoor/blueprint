@@ -100,6 +100,7 @@ one_cmpt_iv <- blueprint %>%
   from_path("path/to/my_data.csv") 
 ```
 
+
 ```{r}
 one_cmpt_iv %>% render() %>% cat()
 ```
@@ -118,6 +119,15 @@ one_cmt_diag %>% render() %>% cat()
 
 ```
 
+```{r}
+one_cmt_block %>%
+  residual_error(ADD = 1) %>%
+  render() %>% cat()
+one_cmt_block %>%
+  residual_error(ADD = 1, PROP = 0.1) %>%
+  render() %>% cat()
+```
+
 ## Eventual extensions
 
 even more standard templates
@@ -128,7 +138,7 @@ knitr::opts_chunk$set(eval = FALSE)
 
 query language sugar for templates
 
-```{r}
+```{r eval = F}
 blueprint %>%
   ode_model(cmt = 1, depot = 1) %>%
   parameterize("CL") 
