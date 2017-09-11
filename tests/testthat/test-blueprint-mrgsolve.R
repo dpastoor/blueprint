@@ -6,6 +6,10 @@ eq_template <- "
 {{/equations}}
 "
 
+resid_error_template <- "
+DV = {{residual_error_eqn}}
+"
+
 describe("mrgsolve blueprint", {
   cl <- parameter(1.5, name = "CL", comment = "mg/L")
   v <- parameter(14.5, name = "V", comment = "mg/L")
@@ -33,5 +37,27 @@ describe("mrgsolve blueprint", {
     blueprint$add_heirarchies(bl = block(0.1, 0.01, 0.1, param_names = c("CL", "V")))
     expect_equal(blueprint$render(),
                  "\n  TVCL = CL\n  TVV = V\n  CL = TVCL*exp(ETA1)\n  V = TVV*exp(ETA2)\n  KA = TVKA\n")
+  })
+})
+
+describe("residual error works for mrgsolve", {
+  blueprint <- Blueprint$new("mrgsolve")
+  blueprint$template <- resid_error_template
+  it("works for simple error structures", {
+  bp <- blueprint$clone()
+  bp$add_residual_error(ADD = 0.1)
+  expect_equal(bp$render(), "\nDV = CP + ADD\n")
+
+  bp <- blueprint$clone()
+  bp$add_residual_error(PROP = 0.1)
+  expect_equal(bp$render(), "\nDV = CP*(1+CP*PROP)\n")
+  })
+  it("works iteratively", {
+  bp <- blueprint$clone()
+  bp$add_residual_error(ADD = 0.1)
+  expect_equal(bp$render(), "\nDV = CP + ADD\n")
+
+  bp$add_residual_error(PROP = 0.1)
+  expect_equal(bp$render(), "\nDV = CP*(1+CP*PROP) + ADD\n")
   })
 })
