@@ -1,5 +1,5 @@
 $PROBLEM   {{problem}}
-$SUB ADVAN1 TRANS2
+$SUB {{routine}}
 $INPUT {{input}}
 $DATA {{data}}
 IGNORE=@
