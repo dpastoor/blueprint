@@ -13,14 +13,14 @@ available_models <- function(type){
     ode = "ADVAN13"
   )
   mrgsolve_types <- list(
-    one_cmt_iv = "[PKMODEL] \n ncmt=1, trans=2",
-    one_cmt_oral = "[PKMODEL] \n ncmt=1, trans=2, depot = true",
-    two_cmt_iv = "[PKMODEL] \n ncmt=1, trans=2",
-    two_cmt_oral = "[PKMODEL] \n ncmt=2, trans=2, depot = true",
+    one_cmt_iv = "[PKMODEL] \n ncmt=1, trans=2 \n\n [CMT] @annotated \n CENT: Central Compartment \n",
+    one_cmt_oral = "[PKMODEL] \n ncmt=1, trans=2, depot = true \n\n [CMT] @annotated \n GUT: Gut Compartment \n CENT: Central Compartment \n ",
+    two_cmt_iv = "[PKMODEL] \n ncmt=1, trans=2 \n\n [CMT] @annotated \n CENT: Central Compartment \n",
+    two_cmt_oral = "[PKMODEL] \n ncmt=2, trans=2, depot = true \n\n [CMT] @annotated \n GUT: Gut Compartment \n CENT: Central Compartment \n PERIPH Peripheral Compartment \n",
     ode = "[ODE] \n"
   )
   if (type == "nonmem") {
     return(nonmem_types)
   }
-  return(mrgsolve_types)
+  return(mrgsolve)
 }
