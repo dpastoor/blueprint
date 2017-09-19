@@ -1,8 +1,8 @@
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/dpastoor/blueprint?branch=master&svg=true)](https://ci.appveyor.com/project/dpastoor/blueprint)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/astrazeneca/blueprint?branch=master&svg=true)](https://ci.appveyor.com/project/astrazeneca/blueprint)
 
-[![Travis build status](https://travis-ci.org/dpastoor/blueprint.svg?branch=master)](https://travis-ci.org/dpastoor/blueprint)
+[![Travis build status](https://travis-ci.org/astrazeneca/blueprint.svg?branch=master)](https://travis-ci.org/astrazeneca/blueprint)
 
-[![Coverage status](https://codecov.io/gh/dpastoor/blueprint/branch/master/graph/badge.svg)](https://codecov.io/github/dpastoor/blueprint?branch=master)
+[![Coverage status](https://codecov.io/gh/astrazeneca/blueprint/branch/master/graph/badge.svg)](https://codecov.io/github/astrazeneca/blueprint?branch=master)
 
 BLUEPRINT
 =======
