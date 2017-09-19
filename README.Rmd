@@ -18,11 +18,18 @@ Blueprints are combined with templates (see below for specifics) to scaffold
 out model control streams.
 
 There are default templates for `nonmem` and `mrgsolve`, however arbitrary
-user defined templates can be easily used as well.
+user defined templates can be easily used as well. The first template is
+the compartmental template, which supports the various compartment models, eg
+1/2 cmt iv/oral etc.
 
 ```{r}
 templates <- load_templates("nonmem")
+models <- available_models("nonmem")
 ```
+
+The specific template and model will need to be bound to the blueprint
+model to render, however this is dynamic, as to generate different model types 
+easily.
 
 ## Core Concepts
 
@@ -90,7 +97,8 @@ other information required by the softwares are available.
 ```{r}
 one_cmpt_iv <- blueprint %>% 
   # use the one cmt iv template
-  use_template(templates$one_cmt_iv) %>%
+  use_template(templates$compartmental) %>%
+  model_type(models$one_cmt_iv) %>%
   # add clearance and volume parameters
   parameters(CL = parameter(5,  
                     lower_bound = 0.01, 
