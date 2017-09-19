@@ -70,8 +70,10 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">blueprint &lt;-<span class="st"> </span>Blueprint<span class="op">$</span><span class="kw">new</span>(<span class="st">"nonmem"</span>)</code></pre></div>
 <pre><code>## initializing new blueprint of type: nonmem</code></pre>
 <p>Blueprints are combined with templates (see below for specifics) to scaffold out model control streams.</p>
-<p>There are default templates for <code>nonmem</code> and <code>mrgsolve</code>, however arbitrary user defined templates can be easily used as well.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">templates &lt;-<span class="st"> </span><span class="kw"><a href="reference/load_templates.html">load_templates</a></span>(<span class="st">"nonmem"</span>)</code></pre></div>
+<p>There are default templates for <code>nonmem</code> and <code>mrgsolve</code>, however arbitrary user defined templates can be easily used as well. The first template is the compartmental template, which supports the various compartment models, eg 1/2 cmt iv/oral etc.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">templates &lt;-<span class="st"> </span><span class="kw"><a href="reference/load_templates.html">load_templates</a></span>(<span class="st">"nonmem"</span>)
+models &lt;-<span class="st"> </span><span class="kw"><a href="reference/available_models.html">available_models</a></span>(<span class="st">"nonmem"</span>)</code></pre></div>
+<p>The specific template and model will need to be bound to the blueprint model to render, however this is dynamic, as to generate different model types easily.</p>
 <div id="core-concepts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#core-concepts" class="anchor"></a>Core Concepts</h2>
@@ -181,7 +183,10 @@ b1</code></pre></div>
 ## [1] 2
 ## 
 ## $comment
-## NULL</code></pre>
+## NULL
+## 
+## attr(,"class")
+## [1] "block"</code></pre>
 <p>Information about the raw matrix, as well as the resultant structure is stored.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">b1<span class="op">$</span>matrix</code></pre></div>
 <pre><code>##      [,1] [,2]
@@ -209,7 +214,8 @@ b1</code></pre></div>
 <a href="#basic-example" class="anchor"></a>Basic example</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">one_cmpt_iv &lt;-<span class="st"> </span>blueprint <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="co"># use the one cmt iv template</span>
-<span class="st">  </span><span class="kw"><a href="reference/use_template.html">use_template</a></span>(templates<span class="op">$</span>one_cmt_iv) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/use_template.html">use_template</a></span>(templates<span class="op">$</span>compartmental) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/model_type.html">model_type</a></span>(models<span class="op">$</span>one_cmt_iv) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># add clearance and volume parameters</span>
 <span class="st">  </span><span class="kw"><a href="reference/parameters.html">parameters</a></span>(<span class="dt">CL =</span> <span class="kw"><a href="reference/parameter.html">parameter</a></span>(<span class="dv">5</span>,  
                     <span class="dt">lower_bound =</span> <span class="fl">0.01</span>, 
@@ -243,9 +249,8 @@ b1</code></pre></div>
 ## 
 ## 
 ## $ERROR
-## 
 ## IPRED=F
-## Y = IPRED*(1 + PROP) + ADD
+## Y = IPRED
 ## 
 ## </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">one_cmt_block &lt;-<span class="st"> </span>one_cmpt_iv <span class="op">%&gt;%</span>
@@ -283,9 +288,8 @@ one_cmt_block <span class="op">%&gt;%</span><span class="st"> </span><span class
 ## 
 ## 
 ## $ERROR
-## 
 ## IPRED=F
-## Y = IPRED*(1 + PROP) + ADD
+## Y = IPRED
 ## 
 ## </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">one_cmt_diag &lt;-<span class="st"> </span>one_cmpt_iv <span class="op">%&gt;%</span>
@@ -325,9 +329,87 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 ## 
 ## 
 ## $ERROR
-## 
 ## IPRED=F
-## Y = IPRED*(1 + PROP) + ADD
+## Y = IPRED
+## 
+## </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">one_cmt_block <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/residual_error.html">residual_error</a></span>(<span class="dt">ADD =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/render.html">render</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cat</span>()</code></pre></div>
+<pre><code>## $PROBLEM   
+## $SUB ADVAN1 TRANS2
+## $INPUT Subject Wt Dose Time conc
+## $DATA path/to/my_data.csv
+## IGNORE=@
+## 
+## $PK
+## 
+## ; constants
+## 
+## 
+##  TVCL = THETA(1)
+##  TVV = THETA(2)
+##  CL = TVCL*EXP(ETA(1))
+##  V = TVV*EXP(ETA(2))
+## 
+## $THETA
+## (0.01 , 5, 10)
+## (0.1 , 34, Inf)
+## 
+## 
+## $OMEGA BLOCK(2)
+## 4.000000e-02 
+## 1.000000e-02 9.000000e-02
+## 
+## 
+## $SIGMA
+## 1  ; ADD
+## 
+## 
+## 
+## $ERROR
+## IPRED=F
+## Y = IPRED + EPS(1)
+## 
+## </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">one_cmt_block <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/residual_error.html">residual_error</a></span>(<span class="dt">ADD =</span> <span class="dv">1</span>, <span class="dt">PROP =</span> <span class="fl">0.1</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/render.html">render</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cat</span>()</code></pre></div>
+<pre><code>## $PROBLEM   
+## $SUB ADVAN1 TRANS2
+## $INPUT Subject Wt Dose Time conc
+## $DATA path/to/my_data.csv
+## IGNORE=@
+## 
+## $PK
+## 
+## ; constants
+## 
+## 
+##  TVCL = THETA(1)
+##  TVV = THETA(2)
+##  CL = TVCL*EXP(ETA(1))
+##  V = TVV*EXP(ETA(2))
+## 
+## $THETA
+## (0.01 , 5, 10)
+## (0.1 , 34, Inf)
+## 
+## 
+## $OMEGA BLOCK(2)
+## 4.000000e-02 
+## 1.000000e-02 9.000000e-02
+## 
+## 
+## $SIGMA
+## 1  ; ADD
+## 0.1  ; PROP
+## 
+## 
+## 
+## $ERROR
+## IPRED=F
+## Y = IPRED*(1+IPRED*EPS(2)) + EPS(1)
 ## 
 ## </code></pre>
 </div>
