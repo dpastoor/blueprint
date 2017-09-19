@@ -27,6 +27,7 @@ templates <- load_templates("nonmem")
 models <- available_models("nonmem")
 ```
 
+
 The specific template and model will need to be bound to the blueprint
 model to render, however this is dynamic, as to generate different model types 
 easily.

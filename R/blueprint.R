@@ -9,7 +9,6 @@ Blueprint <-
      public = list(
        partials = NULL,
        type = NULL,
-       # this maybe more suitable for private, but for now will bind directly
        routine = NULL,
        initialize = function(type = "nonmem") {
          # TODO: remove, just using this as a placeholder
@@ -287,6 +286,7 @@ Blueprint <-
          }
          private$dat <- .data
        },
+
        datapath = function(.datapath) {
          if (missing(.datapath)) {
            return(private$datpath)

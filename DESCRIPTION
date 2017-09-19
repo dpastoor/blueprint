@@ -2,7 +2,10 @@ Package: blueprint
 Version: 0.4.0
 Title: create models easily
 Description: Design model specifications from a simple, consistent API.
-Authors@R: person("devin", "pastoor", email = "devin.pastoor@gmail.com", role = c("aut", "cre"))
+Authors@R: c(
+  person("devin", "pastoor", email = "devin.pastoor@gmail.com", role = c("aut", "cre")),
+  person(family = "AstraZeneca", role = c("cph", "fnd"))
+  )
 Depends: R (>= 3.1.2)
 License: MIT + file LICENSE 
 Encoding: UTF-8
