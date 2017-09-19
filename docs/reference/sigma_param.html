@@ -82,7 +82,7 @@
     <p>diagonal values</p>
     
 
-    <pre class="usage"><span class='fu'>sigma_param</span>(<span class='no'>value</span>, <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>comment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>sigma_param</span>(<span class='no'>value</span>, <span class='no'>name</span>, <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>comment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -90,6 +90,10 @@
     <tr>
       <th>value</th>
       <td><p>value</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>name</p></td>
     </tr>
     <tr>
       <th>fix</th>
@@ -101,13 +105,20 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>PROP, ADD are specially recognized names to design the residual
+error structure, else, will need to code it oneself</p>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+          </ul>
 
   </div>
 </div>

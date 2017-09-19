@@ -75,6 +75,21 @@ use_template <- function(bp, template) {
   return(bp)
 }
 
+#' chainable method to specify the model type
+#'
+#' @param bp blueprint object
+#' @param model_type type of model
+#' @examples
+#' bp <- Blueprint$new("nonmem")
+#' models <- available_models("nonmem")
+#' bp %>% model_type(models$one_cmt_iv)
+#' @export
+model_type <- function(bp, model_type) {
+  bp <- bp$clone()
+  bp$routine <- model_type
+  return(bp)
+}
+
 #' chainable method to render
 #'
 #' @param bp blueprint object

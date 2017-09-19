@@ -8,15 +8,14 @@
   {{> constant}}
 {{/constants}}
 
-[PKMODEL]
-ncmt=1, trans=2
-
-[CMT] @annotated
-CENT : Central compartment
+{{routine}}
 
 [MAIN]
 
-D_CENT = 1
+; constants
+{{#constants}}
+{{> constant}}
+{{/constants}}
 
 {{#equations}}
 {{> equation}}
@@ -35,3 +34,6 @@ D_CENT = 1
 
 [TABLE]
 double CP = CENT/V
+
+[CAPTURE] @annotated
+CP : Central compartment concentration

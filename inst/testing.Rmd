@@ -11,8 +11,10 @@ library(tidyverse)
 ```{r}
 blueprint <- Blueprint$new("nonmem")
 ```
+
 ```{r}
 templates <- load_templates("nonmem")
+models <- available_models("nonmem")
 ```
 
 ```{r}
@@ -38,17 +40,20 @@ one_cmpt_iv$get_all_elements()
 ```{r} 
 one_cmpt_iv <- one_cmpt_iv %>%
   constants(STD_WT = 70) %>%
-  residual_error(prop = sigma_param(0.04, comment = "Proportional Error")) %>%
+  residual_error(prop = sigma_param(0.04, "PROP", comment = "Proportional Error")) %>%
   with_data(head(Theoph)) %>%
   from_path("path/to/my_data.csv") 
 
 one_cmpt_iv %>%
-  heirarchies(CL = 0.04, V = 0.09) %>% use_template(templates$one_cmt_iv)%>% 
+  heirarchies(CL = 0.04, V = 0.09) %>% 
+  model_type(models$one_cmt_iv) %>%
+  use_template(templates$compartmental)%>% 
   render() %>% cat()
 
 one_cmpt_iv %>%
   heirarchies(b1 = block(0.04, 0.01, 0.09, param_names = c("CL", "V"))) %>% 
-  use_template(templates$one_cmt_iv) %>% 
+  model_type(models$one_cmt_iv) %>%
+  use_template(templates$compartmental) %>% 
   render() %>% cat()
 ```
 
