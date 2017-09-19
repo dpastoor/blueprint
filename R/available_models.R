@@ -22,5 +22,5 @@ available_models <- function(type){
   if (type == "nonmem") {
     return(nonmem_types)
   }
-  return(mrgsolve)
+  return(mrgsolve_types)
 }
