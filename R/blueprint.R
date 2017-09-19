@@ -9,6 +9,8 @@ Blueprint <-
      public = list(
        partials = NULL,
        type = NULL,
+       # this maybe more suitable for private, but for now will bind directly
+       routine = NULL,
        initialize = function(type = "nonmem") {
          # TODO: remove, just using this as a placeholder
          message(sprintf("initializing new blueprint of type: %s", type))
@@ -268,6 +270,7 @@ Blueprint <-
                         modifyList(settings,
                                    list(
                                      equations = private$equation_mapper(self$get_all_elements()),
+                                     routine = self$routine,
                                      input = paste0(names(private$dat), collapse = " "),
                                      data = private$datpath,
                                      residual_error_eqn = resid_error
