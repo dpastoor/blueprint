@@ -4,7 +4,7 @@ $INPUT {{input}}
 $DATA {{data}}
 IGNORE=@
 {{#ignore}}
-IGNORE=({{.}})
+IGNORE=({{{.}}})
 {{/ignore}}
 
 $PK
@@ -15,7 +15,7 @@ $PK
 {{/constants}}
 
 {{#equations}}
- {{.}}
+ {{{.}}}
 {{/equations}}
 
 $THETA
