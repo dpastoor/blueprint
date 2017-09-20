@@ -4,7 +4,7 @@ $INPUT {{input}}
 $DATA {{data}}
 IGNORE=@
 {{#ignore}}
-IGNORE=({{ignore}})
+IGNORE=({{.}})
 {{/ignore}}
 
 $PK
