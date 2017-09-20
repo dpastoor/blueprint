@@ -65,8 +65,10 @@ Blueprint <-
          }
          if (.overwrite) {
            private$ignore_strings <- ignores
+           return(self)
          }
          private$ignore_strings <- c(private$ignore_strings, ignores)
+         return(self)
        },
        # add_params adds parameters specified either shorthand CL = 5,
        # or via param(), it returns a vector of parameter names
