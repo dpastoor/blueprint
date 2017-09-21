@@ -10,6 +10,8 @@ ignore(bp, x, overwrite = FALSE)
 \item{bp}{blueprint object}
 
 \item{x}{vector of ignore strings}
+
+\item{overwrite}{whether to overwrite existing ignore strings, default FALSE}
 }
 \description{
 chainable function to access add_ignores method

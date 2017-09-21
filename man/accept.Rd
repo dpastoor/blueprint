@@ -10,6 +10,8 @@ accept(bp, x, overwrite = FALSE)
 \item{bp}{blueprint object}
 
 \item{x}{vector of accept strings}
+
+\item{overwrite}{whether to overwrite existing accept strings, default FALSE}
 }
 \description{
 chainable function to access add_accepts method

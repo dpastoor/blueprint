@@ -1,6 +1,7 @@
 #' chainable function to access add_accepts method
 #' @param bp blueprint object
 #' @param x vector of accept strings
+#' @param overwrite whether to overwrite existing accept strings, default FALSE
 #' @examples
 #' bp <- Blueprint$new("nonmem")
 #' bp %>%
@@ -15,6 +16,7 @@ accept <- function(bp, x, overwrite = FALSE) {
 #' chainable function to access add_ignores method
 #' @param bp blueprint object
 #' @param x vector of ignore strings
+#' @param overwrite whether to overwrite existing ignore strings, default FALSE
 #' @examples
 #' bp <- Blueprint$new("nonmem")
 #' bp %>%
