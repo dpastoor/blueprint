@@ -294,6 +294,7 @@ Blueprint <-
                                      routine = self$routine,
                                      input = paste0(names(private$dat), collapse = " "),
                                      ignore = private$ignore_strings,
+                                     accept = private$accept_strings,
                                      data = private$datpath,
                                      residual_error_eqn = resid_error
                                    )),
