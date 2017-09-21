@@ -1,3 +1,31 @@
+#' chainable function to access add_accepts method
+#' @param bp blueprint object
+#' @param x vector of accept strings
+#' @examples
+#' bp <- Blueprint$new("nonmem")
+#' bp %>%
+#' accept(c("TIME.LT.100", "DV.GT.5"))
+#' @export
+accept <- function(bp, x, overwrite = FALSE) {
+  bp <- bp$clone()
+  bp$add_accepts(x, .overwrite = overwrite)
+  return(bp)
+}
+
+#' chainable function to access add_ignores method
+#' @param bp blueprint object
+#' @param x vector of ignore strings
+#' @examples
+#' bp <- Blueprint$new("nonmem")
+#' bp %>%
+#' ignore(c("TIME.GT.100", "DV.LT.1"))
+#' @export
+ignore <- function(bp, x, overwrite = FALSE) {
+  bp <- bp$clone()
+  bp$add_ignores(x, .overwrite = overwrite)
+  return(bp)
+}
+
 #' chainable function to access add_params method
 #'
 #' @param bp blueprint object
