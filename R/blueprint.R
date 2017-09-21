@@ -59,10 +59,7 @@ Blueprint <-
            })
            return(names(constructed_params))
        },
-       add_ignores = function(ignores, ..., .overwrite = FALSE, .drop = NULL) {
-         if (!is.null(.drop)) {
-            private$ignore_strings <- private$ignore_strings[-which(private$ignore_strings %in% .drop)]
-         }
+       add_ignores = function(ignores, ..., .overwrite = FALSE) {
          if (.overwrite) {
            private$ignore_strings <- ignores
            return(self)
@@ -70,10 +67,7 @@ Blueprint <-
          private$ignore_strings <- c(private$ignore_strings, ignores)
          return(self)
        },
-       add_accepts = function(accepts, ..., .overwrite = FALSE, .drop = NULL) {
-         if (!is.null(.drop)) {
-            private$accept_strings <- private$accept_strings[-which(private$accept_strings %in% .drop)]
-         }
+       add_accepts = function(accepts, ..., .overwrite = FALSE) {
          if (.overwrite) {
            private$accept_strings <- accepts
            return(self)
