@@ -6,6 +6,9 @@ IGNORE=@
 {{#ignore}}
 IGNORE=({{{.}}})
 {{/ignore}}
+{{#accept}}
+ACCEPT=({{{.}}})
+{{/accept}}
 
 $PK
 
