@@ -70,6 +70,17 @@ Blueprint <-
          private$ignore_strings <- c(private$ignore_strings, ignores)
          return(self)
        },
+       add_accepts = function(accepts, ..., .overwrite = FALSE, .drop = NULL) {
+         if (!is.null(.drop)) {
+            private$accept_strings <- private$accept_strings[-which(private$accept_strings %in% .drop)]
+         }
+         if (.overwrite) {
+           private$accept_strings <- accepts
+           return(self)
+         }
+         private$accept_strings <- c(private$accept_strings, accepts)
+         return(self)
+       },
        # add_params adds parameters specified either shorthand CL = 5,
        # or via param(), it returns a vector of parameter names
        # for any created
@@ -318,6 +329,7 @@ Blueprint <-
        dat = NULL,
        templ = NULL,
        constants = list(),
+       accept_strings = NULL,
        ignore_strings = NULL,
        parameters = list(),
        omegas = list(),
