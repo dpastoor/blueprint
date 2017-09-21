@@ -4,7 +4,7 @@ context("accept:nonmem")
 describe("accept statements are generated for nonmem", {
   tmpl <- "
 {{#accept}}
-IGNORE=({{{.}}})
+ACCEPT=({{{.}}})
 {{/accept}}
 "
   it("can construct a full accept statement", {
