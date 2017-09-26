@@ -59,6 +59,22 @@ Blueprint <-
            })
            return(names(constructed_params))
        },
+       add_ignores = function(ignores, ..., .overwrite = FALSE) {
+         if (.overwrite) {
+           private$ignore_strings <- ignores
+           return(self)
+         }
+         private$ignore_strings <- c(private$ignore_strings, ignores)
+         return(self)
+       },
+       add_accepts = function(accepts, ..., .overwrite = FALSE) {
+         if (.overwrite) {
+           private$accept_strings <- accepts
+           return(self)
+         }
+         private$accept_strings <- c(private$accept_strings, accepts)
+         return(self)
+       },
        # add_params adds parameters specified either shorthand CL = 5,
        # or via param(), it returns a vector of parameter names
        # for any created
@@ -271,6 +287,8 @@ Blueprint <-
                                      equations = private$equation_mapper(self$get_all_elements()),
                                      routine = self$routine,
                                      input = paste0(names(private$dat), collapse = " "),
+                                     ignore = private$ignore_strings,
+                                     accept = private$accept_strings,
                                      data = private$datpath,
                                      residual_error_eqn = resid_error
                                    )),
@@ -306,6 +324,8 @@ Blueprint <-
        dat = NULL,
        templ = NULL,
        constants = list(),
+       accept_strings = NULL,
+       ignore_strings = NULL,
        parameters = list(),
        omegas = list(),
        sigmas = list(),
