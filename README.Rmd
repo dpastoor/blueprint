@@ -36,8 +36,8 @@ easily.
 
 Blueprint provides a pipeline-based API for declaring the model components. In
 general, the nomenclature draws from a general terminology to NLMEM. Specifically,
-there are constants, parameters (thetas) and heirarchies (omega/sigma). 
-These constants, parameters, and heirarchies are combined together to inform the
+there are constants, parameters (thetas) and hierarchies (omega/sigma). 
+These constants, parameters, and hierarchies are combined together to inform the
 model structure. 
 
 The required components for each piece are as minimal as possible, generally
@@ -67,11 +67,11 @@ cl <- parameter(1.5,
 cl
 ```
 
-### Heirarchies
+### hierarchies
 
-Heirarchies can either be diagonal or block elements. Diagonal elements
+hierarchies can either be diagonal or block elements. Diagonal elements
 are specified via `omega_param` and block elements via `block`. The
-heirarchical parameter is **link**ed to a parameter via a name. 
+hierarchical parameter is **link**ed to a parameter via a name. 
 
 ```{r }
 b1 <- block(0.04, 0.01, 0.09, param_names = c("CL", "V"))
@@ -117,12 +117,12 @@ one_cmpt_iv %>% render() %>% cat()
 
 ```{r}
 one_cmt_block <- one_cmpt_iv %>%
-  heirarchies(b1 = block(0.04, 0.01, 0.09, param_names = c("CL", "V")))
+  hierarchies(b1 = block(0.04, 0.01, 0.09, param_names = c("CL", "V")))
 
 one_cmt_block %>% render() %>% cat()
 
 one_cmt_diag <- one_cmpt_iv %>%
-  heirarchies(CL = 0.04, V = 0.09)
+  hierarchies(CL = 0.04, V = 0.09)
 
 one_cmt_diag %>% render() %>% cat()
 

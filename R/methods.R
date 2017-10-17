@@ -50,7 +50,7 @@ upper_bound <- function (x, ...) {
   UseMethod("upper_bound", x)
 }
 
-#' @title get a parameters link to a heirarchy
+#' @title get a parameters link to a hierarchy
 #' @param x parameter
 #' @param ... other arguments
 #' @examples
