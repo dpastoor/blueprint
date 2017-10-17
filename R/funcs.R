@@ -50,14 +50,14 @@ constants <- function(bp, ...) {
   return(bp)
 }
 
-#' chainable method to add heirarchies
+#' chainable method to add hierarchies
 #'
 #' @param bp blueprint object
 #' @param ... params to pass
 #' @export
-heirarchies <- function(bp, ...) {
+hierarchies <- function(bp, ...) {
   bp <- bp$clone()
-  bp$add_heirarchies(...)
+  bp$add_hierarchies(...)
   return(bp)
 }
 

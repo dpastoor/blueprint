@@ -141,7 +141,7 @@ Blueprint <-
          }
          return(private$parameters)
        },
-       add_heirarchies = function(...){
+       add_hierarchies = function(...){
          # TODO: currently basically add_param but tweaked to save to omega - should refactor
            omega_list <- dots(...)
            omega_names <- names(omega_list)

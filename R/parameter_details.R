@@ -18,7 +18,7 @@ bounds_check <- function(value, .lb, .ub) {
 #' @param upper_bound upper bound, Default: Inf
 #' @param fixed whether parameter should be fixed, Default: FALSE
 #' @param covariate_relationships covariate relationships, Default: NULL
-#' @param link name to link to a heirarchy, Default: name
+#' @param link name to link to a hierarchy, Default: name
 #' @return object with class parameter
 #' @examples
 #' cl <- parameter(1.5, "CL")
