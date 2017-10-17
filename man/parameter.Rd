@@ -23,7 +23,7 @@ parameter(value, name = NULL, comment = NULL, lower_bound = -Inf,
 
 \item{covariate_relationships}{covariate relationships, Default: NULL}
 
-\item{link}{name to link to a heirarchy, Default: name}
+\item{link}{name to link to a hierarchy, Default: name}
 }
 \value{
 object with class parameter
