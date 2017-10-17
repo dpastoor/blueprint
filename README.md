@@ -1,12 +1,14 @@
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/AstraZeneca/blueprint?branch=master&svg=true)](https://ci.appveyor.com/project/AtraZeneca/blueprint)
 
+
 [![Travis build
 status](https://travis-ci.org/AstraZeneca/blueprint.svg?branch=master)](https://travis-ci.org/astrazeneca/blueprint)
 
-https://travis-ci.org/AstraZeneca/blueprint.svg?branch=master
+
 [![Coverage
 status](https://codecov.io/gh/AstraZeneca/blueprint/branch/master/graph/badge.svg)](https://codecov.io/github/AstraZeneca/blueprint?branch=master)
+
 
 BLUEPRINT
 =========
