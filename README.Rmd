@@ -225,7 +225,7 @@ bp %>% parameters(
   CL = parameter(1.4, lower_bound = 0.1, comment = "L/hr"),
   V = parameter(32.5, lower_bound = 0.1, comment = "L")
 ) %>%
-  heirarchies(F1 = 0.1,
+  hierarchies(F1 = 0.1,
               ALAG1 = 0.1,
               KA = 0.1,
               CL_V = block(0.1, 0.01, 0.1,
