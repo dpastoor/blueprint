@@ -3,7 +3,7 @@
 \name{link}
 \alias{link}
 \alias{link.parameter}
-\title{get a parameters link to a heirarchy}
+\title{get a parameters link to a hierarchy}
 \usage{
 link(x, ...)
 

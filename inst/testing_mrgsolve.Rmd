@@ -26,7 +26,7 @@ one_cmpt_iv <- one_cmpt_iv %>%
   residual_error(prop = sigma_param(0.04, .comment = "Proportional Error")) %>%
   with_data(head(Theoph)) %>%
   from_path("path/to/my_data.csv") %>%
-  heirarchy(KA = 0.04, b1 = block(0.04, 0.61, 0.09, .params = c("CL", "V"), correlation = TRUE)) 
+  hierarchy(KA = 0.04, b1 = block(0.04, 0.61, 0.09, .params = c("CL", "V"), correlation = TRUE)) 
 ```
 
 ```{r}

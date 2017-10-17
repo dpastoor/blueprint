@@ -45,13 +45,13 @@ one_cmpt_iv <- one_cmpt_iv %>%
   from_path("path/to/my_data.csv") 
 
 one_cmpt_iv %>%
-  heirarchies(CL = 0.04, V = 0.09) %>% 
+  hierarchies(CL = 0.04, V = 0.09) %>% 
   model_type(models$one_cmt_iv) %>%
   use_template(templates$compartmental)%>% 
   render() %>% cat()
 
 one_cmpt_iv %>%
-  heirarchies(b1 = block(0.04, 0.01, 0.09, param_names = c("CL", "V"))) %>% 
+  hierarchies(b1 = block(0.04, 0.01, 0.09, param_names = c("CL", "V"))) %>% 
   model_type(models$one_cmt_iv) %>%
   use_template(templates$compartmental) %>% 
   render() %>% cat()
@@ -59,6 +59,6 @@ one_cmpt_iv %>%
 
 ```{r}
 one_cmpt_iv %>%
-  heirarchies(bl = block(0.04, 0.06, 0.09, params = c("CL", "V"))) %>% 
+  hierarchies(bl = block(0.04, 0.06, 0.09, params = c("CL", "V"))) %>% 
   use_template(templates$one_cmt_iv) %>% render() %>% cat()
 ```
