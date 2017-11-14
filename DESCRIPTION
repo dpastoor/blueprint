@@ -1,5 +1,5 @@
 Package: blueprint
-Version: 0.4.0
+Version: 0.5.0
 Title: create models easily
 Description: Design model specifications from a simple, consistent API.
 Authors@R: c(

@@ -5,5 +5,5 @@ $OMEGA BLOCK({{num_params}})
 {{^block}}
 $OMEGA
 
-{{value}}
+{{value}} {{#fixed}} FIX {{/fixed}}
 {{/block}}
