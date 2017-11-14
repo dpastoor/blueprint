@@ -4,14 +4,15 @@
 \alias{block}
 \title{block matrix}
 \usage{
-block(..., param_names, fix = FALSE, correlation = FALSE, comment = NULL)
+block(..., param_names, fixed = FALSE, correlation = FALSE,
+  comment = NULL)
 }
 \arguments{
 \item{...}{elements to coerce into a block matrix}
 
 \item{param_names}{parameters associated with the elements of the matrix}
 
-\item{fix}{whether the values should be fixed}
+\item{fixed}{whether the values should be fixed}
 
 \item{correlation}{whether to create as a correlation matrix}
 

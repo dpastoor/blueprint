@@ -158,7 +158,7 @@ Blueprint <-
             # if numeric assume shorthand value only
             # CL = 4.5
             if (is_bare_numeric(omega_info)) {
-              return(omega_param(omega_info, .pn, fix = FALSE))
+              return(omega_param(omega_info, .pn, fixed = FALSE))
             }
             # for now going to make the big assumption people will
             # actually use block()/omega_param to create full omegas specifications,

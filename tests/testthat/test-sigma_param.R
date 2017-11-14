@@ -8,12 +8,12 @@ describe("sigma_param() works", {
         list(
           block = FALSE,
           name = "PROP",
-          fix = FALSE,
+          fixed = FALSE,
           correlation = FALSE,
           value = 0.04,
           comment = NULL
         ),
-        .Names = c("block", "name", "fix",
+        .Names = c("block", "name", "fixed",
                    "correlation", "value", "comment"),
         class = "sigma"
       )

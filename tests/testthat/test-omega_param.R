@@ -8,13 +8,13 @@ describe("omega_param() works", {
         list(
           block = FALSE,
           link = "CL",
-          fix = FALSE,
+          fixed = FALSE,
           correlation = FALSE,
           value = 0.04,
           comment = NULL
         ),
         .Names = c("block", "link",
-                   "fix", "correlation", "value", "comment"),
+                   "fixed", "correlation", "value", "comment"),
         class = "omega"
       )
     expect_equal(input,
