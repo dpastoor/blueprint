@@ -75,6 +75,21 @@ Blueprint <-
          private$accept_strings <- c(private$accept_strings, accepts)
          return(self)
        },
+       add_hooks = function(...) {
+         # TODO(devin) check that hooks are only single character element for each
+         .dots <- dots(...)
+         names(.dots) <- purrr::map_chr(names(.dots), function(.n) {
+           if (is.null(.n)) {
+             stop("all hooks must be named")
+           }
+           # can accept full name hooks:pre:pk or pre:pk
+           # as can just clean out the hooks: if exists then recreate
+           # requires less logic than detecting and conditionally adding
+           paste0("hooks:", gsub("^hooks:", replacement = "", .n))
+         })
+         private$hooks <- modifyList(private$hooks, .dots)
+         self
+       },
        # add_params adds parameters specified either shorthand CL = 5,
        # or via param(), it returns a vector of parameter names
        # for any created
@@ -281,17 +296,18 @@ Blueprint <-
            ipred,
            self$type
            )
+         .options <- list(
+           equations = private$equation_mapper(self$get_all_elements()),
+           routine = self$routine,
+           input = paste0(names(private$dat), collapse = " "),
+           ignore = private$ignore_strings,
+           accept = private$accept_strings,
+           data = private$datpath,
+           residual_error_eqn = resid_error
+         )
          whisker::whisker.render(self$template,
-                        modifyList(settings,
-                                   list(
-                                     equations = private$equation_mapper(self$get_all_elements()),
-                                     routine = self$routine,
-                                     input = paste0(names(private$dat), collapse = " "),
-                                     ignore = private$ignore_strings,
-                                     accept = private$accept_strings,
-                                     data = private$datpath,
-                                     residual_error_eqn = resid_error
-                                   )),
+                        purrr::reduce(list(settings, .options, private$hooks),
+                                      modifyList),
                         partials = self$partials
          )
        }
@@ -323,6 +339,7 @@ Blueprint <-
        datpath = NULL,
        dat = NULL,
        templ = NULL,
+       hooks = list(),
        constants = list(),
        accept_strings = NULL,
        ignore_strings = NULL,
