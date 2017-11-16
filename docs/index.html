@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="/index.html">
+  <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -55,8 +55,8 @@
     
 <div class="contents">
 
-<p><a href="https://travis-ci.org/astrazeneca/blueprint"><img src="https://travis-ci.org/astrazeneca/blueprint.svg?branch=master" alt="Travis build status"></a></p>
-<p><a href="https://codecov.io/github/astrazeneca/blueprint?branch=master"><img src="https://codecov.io/gh/astrazeneca/blueprint/branch/master/graph/badge.svg" alt="Coverage status"></a></p>
+<p><a href="https://travis-ci.org/AstraZeneca/blueprint"><img src="https://travis-ci.org/AstraZeneca/blueprint.svg?branch=master" alt="Travis build status"></a></p>
+<p><a href="https://codecov.io/github/AstraZeneca/blueprint?branch=master"><img src="https://codecov.io/gh/AstraZeneca/blueprint/branch/master/graph/badge.svg" alt="Coverage status"></a></p>
 <div id="blueprint" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#blueprint" class="anchor"></a>BLUEPRINT</h1></div>
@@ -165,7 +165,7 @@ b1</code></pre></div>
 ## $params
 ## [1] "CL" "V" 
 ## 
-## $fix
+## $fixed
 ## [1] FALSE
 ## 
 ## $correlation
@@ -231,11 +231,15 @@ b1</code></pre></div>
 ## IGNORE=@
 ## $PK
 ## 
+## 
+## 
 ## ; constants
 ## 
 ## 
 ##  CL = THETA(1)
 ##  V = THETA(2)
+## 
+## 
 ## $THETA
 ## (0.01 , 5, 10)
 ## (0.1 , 34, Inf)
@@ -261,6 +265,8 @@ one_cmt_block <span class="op">%&gt;%</span><span class="st"> </span><span class
 ## IGNORE=@
 ## $PK
 ## 
+## 
+## 
 ## ; constants
 ## 
 ## 
@@ -268,6 +274,8 @@ one_cmt_block <span class="op">%&gt;%</span><span class="st"> </span><span class
 ##  TVV = THETA(2)
 ##  CL = TVCL*EXP(ETA(1))
 ##  V = TVV*EXP(ETA(2))
+## 
+## 
 ## $THETA
 ## (0.01 , 5, 10)
 ## (0.1 , 34, Inf)
@@ -296,6 +304,8 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 ## IGNORE=@
 ## $PK
 ## 
+## 
+## 
 ## ; constants
 ## 
 ## 
@@ -303,15 +313,17 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 ##  TVV = THETA(2)
 ##  CL = TVCL*EXP(ETA(1))
 ##  V = TVV*EXP(ETA(2))
+## 
+## 
 ## $THETA
 ## (0.01 , 5, 10)
 ## (0.1 , 34, Inf)
 ## 
 ## 
 ## $OMEGA
-## 0.04
+## 0.04 
 ## $OMEGA
-## 0.09
+## 0.09 
 ## 
 ## 
 ## $SIGMA
@@ -331,6 +343,8 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 ## IGNORE=@
 ## $PK
 ## 
+## 
+## 
 ## ; constants
 ## 
 ## 
@@ -338,6 +352,8 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 ##  TVV = THETA(2)
 ##  CL = TVCL*EXP(ETA(1))
 ##  V = TVV*EXP(ETA(2))
+## 
+## 
 ## $THETA
 ## (0.01 , 5, 10)
 ## (0.1 , 34, Inf)
@@ -366,6 +382,8 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 ## IGNORE=@
 ## $PK
 ## 
+## 
+## 
 ## ; constants
 ## 
 ## 
@@ -373,6 +391,8 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 ##  TVV = THETA(2)
 ##  CL = TVCL*EXP(ETA(1))
 ##  V = TVV*EXP(ETA(2))
+## 
+## 
 ## $THETA
 ## (0.01 , 5, 10)
 ## (0.1 , 34, Inf)
@@ -521,11 +541,11 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 ## 
 ## 
 ## $OMEGA
-## 0.1
+## 0.1 
 ## $OMEGA
-## 0.1
+## 0.1 
 ## $OMEGA
-## 0.1
+## 0.1 
 ## $OMEGA BLOCK(2)
 ## 1.000000e-01 
 ## 1.000000e-02 1.000000e-01
@@ -563,7 +583,7 @@ one_cmt_diag <span class="op">%&gt;%</span><span class="st"> </span><span class=
 </ul>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://ci.appveyor.com/project/astrazeneca/blueprint"><img src="https://ci.appveyor.com/api/projects/status/github/astrazeneca/blueprint?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/AstraZeneca/blueprint"><img src="https://ci.appveyor.com/api/projects/status/github/AstraZeneca/blueprint?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
 </ul>
 </div>
 

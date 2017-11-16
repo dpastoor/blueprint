@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -82,7 +82,8 @@
     <p>block matrix</p>
     
 
-    <pre class="usage"><span class='fu'>block</span>(<span class='no'>...</span>, <span class='no'>param_names</span>, <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>correlation</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>comment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>block</span>(<span class='no'>...</span>, <span class='no'>param_names</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>correlation</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>comment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -96,7 +97,7 @@
       <td><p>parameters associated with the elements of the matrix</p></td>
     </tr>
     <tr>
-      <th>fix</th>
+      <th>fixed</th>
       <td><p>whether the values should be fixed</p></td>
     </tr>
     <tr>
@@ -117,7 +118,7 @@
 #&gt; $params
 #&gt; [1] "CL" "V" 
 #&gt; 
-#&gt; $fix
+#&gt; $fixed
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $correlation
@@ -145,7 +146,7 @@
 #&gt; $params
 #&gt; [1] "CL" "V" 
 #&gt; 
-#&gt; $fix
+#&gt; $fixed
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $correlation
