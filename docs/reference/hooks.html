@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>chainable method to set path to data file — from_path • blueprint</title>
+<title>chainable method to add hooks — hooks • blueprint</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -75,14 +75,14 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>chainable method to set path to data file</h1>
+    <h1>chainable method to add hooks</h1>
     </div>
 
     
-    <p>chainable method to set path to data file</p>
+    <p>chainable method to add hooks</p>
     
 
-    <pre class="usage"><span class='fu'>from_path</span>(<span class='no'>bp</span>, <span class='no'>path</span>)</pre>
+    <pre class="usage"><span class='fu'>hooks</span>(<span class='no'>bp</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -92,18 +92,54 @@
       <td><p>blueprint object</p></td>
     </tr>
     <tr>
-      <th>path</th>
-      <td><p>path for data file for a control stream</p></td>
+      <th>...</th>
+      <td><p>params to pass</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>hooks can be added into any template, and should
+follow the naming convention hooks:&lt;major_element&gt;:&lt;location&gt;</p>
+<p>For example, hooks:pk:begin might be
+placed at the top of $PK in a template</p>
+<p>the  [hooks()] function will inject a string into that template
+by matching the name.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)
+<span class='no'>bp</span> <span class='kw'>&lt;-</span> <span class='no'>Blueprint</span>$<span class='fu'>new</span>(<span class='st'>"nonmem"</span>)</div><div class='output co'>#&gt; <span class='message'>initializing new blueprint of type: nonmem</span></div><div class='input'>
+<span class='no'>bp</span>$<span class='no'>template</span> <span class='kw'>&lt;-</span> <span class='st'>"
+$PK
+{{hooks:pk:begin}}
+
+;; stuff in $PK
+
+{{hooks:pk:end}}
+"</span>
+<span class='no'>bp</span> <span class='kw'>%&gt;%</span>
+<span class='fu'>hooks</span>(<span class='st'>"pk:begin"</span> <span class='kw'>=</span> <span class='st'>";; comment at top of PK"</span>,
+      <span class='st'>"pk:end"</span> <span class='kw'>=</span> <span class='st'>"V2 = S2/1000"</span>) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='render.html'>render</a></span>() <span class='kw'>%&gt;%</span>
+<span class='co'># to print lines nicely</span>
+<span class='fu'>cat</span>()</div><div class='output co'>#&gt; 
+#&gt; $PK
+#&gt; ;; comment at top of PK
+#&gt; 
+#&gt; ;; stuff in $PK
+#&gt; 
+#&gt; V2 = S2/1000</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -12,6 +12,8 @@ ACCEPT=({{{.}}})
 
 $PK
 
+{{hooks:pk:begin}}
+
 ; constants
 {{#constants}}
 {{> constant}}
@@ -20,6 +22,8 @@ $PK
 {{#equations}}
  {{{.}}}
 {{/equations}}
+
+{{hooks:pk:end}}
 
 $THETA
 {{#parameters}}
