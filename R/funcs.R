@@ -61,6 +61,44 @@ hierarchies <- function(bp, ...) {
   return(bp)
 }
 
+#' chainable method to add hooks
+#'
+#' @param bp blueprint object
+#' @param ... params to pass
+#' @details
+#' hooks can be added into any template, and should
+#' follow the naming convention hooks:<major_element>:<location>
+#'
+#' For example, {{hooks:pk:begin}} might be
+#' placed at the top of $PK in a template
+#'
+#' the  [hooks()] function will inject a string into that template
+#' by matching the name.
+#' @examples
+#' library(dplyr)
+#' bp <- Blueprint$new("nonmem")
+#'
+#' bp$template <- "
+#' $PK
+#' {{hooks:pk:begin}}
+#'
+#' // stuff in $PK
+#'
+#' {{hooks:pk:end}}
+#' "
+#' bp %>%
+#' hooks("pk:begin" = "// comment at top of PK",
+#'       "pk:end" = "V2 = S2/1000") %>%
+#' render() %>%
+#' // to print lines
+#' cat()
+#' @export
+hooks <- function(bp, ...) {
+  bp <- bp$clone()
+  bp$add_hooks(...)
+  return(bp)
+}
+
 #' chainable method to add_residual_error
 #'
 #' @param bp blueprint object
