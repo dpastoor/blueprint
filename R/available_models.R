@@ -8,8 +8,8 @@ available_models <- function(type){
   nonmem_types <- list(
     one_cmt_iv  = "ADVAN1 TRANS2",
     one_cmt_oral  = "ADVAN2 TRANS2",
-    two_cmt_iv  = "ADVAN3 TRANS2",
-    two_cmt_oral  = "ADVAN4 TRANS2",
+    two_cmt_iv  = "ADVAN3 TRANS4",
+    two_cmt_oral  = "ADVAN4 TRANS4",
     ode = "ADVAN13"
   )
   mrgsolve_types <- list(
