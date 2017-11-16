@@ -32,14 +32,14 @@ bp$template <- "
 $PK
 {{hooks:pk:begin}}
 
-// stuff in $PK
+;; stuff in $PK
 
 {{hooks:pk:end}}
 "
 bp \%>\%
-hooks("pk:begin" = "// comment at top of PK",
+hooks("pk:begin" = ";; comment at top of PK",
       "pk:end" = "V2 = S2/1000") \%>\%
 render() \%>\%
-// to print lines
+# to print lines nicely
 cat()
 }
