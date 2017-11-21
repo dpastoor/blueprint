@@ -17,7 +17,9 @@ get_residual_error_eqn(elements, ipred, type)
 get the residual error equation
 }
 \details{
-currently supports ADD and PROP
+currently supports ADD and PROP. A combination of
+additive and proportional errors can be used to generate
+a combined error structure
 }
 \examples{
 get_residual_error_eqn("ADD", "IPRED", "nonmem")
