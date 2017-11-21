@@ -3,7 +3,9 @@
 #' @param ipred the name for the IPRED variable
 #' @param type type of model, nonmem or mrgsolve
 #' @details
-#' currently supports ADD and PROP
+#' currently supports ADD and PROP. A combination of
+#' additive and proportional errors can be used to generate
+#' a combined error structure
 #' @examples
 #' get_residual_error_eqn("ADD", "IPRED", "nonmem")
 #' get_residual_error_eqn(c("ADD", "PROP"), "IPRED", "nonmem")
@@ -25,10 +27,14 @@ get_residual_error_eqn <- function(elements, ipred, type) {
   if (length(elements) == 1) {
     return(switch(elements,
       ADD = glue("{ipred} + {name_mapping[1]}"),
-      PROP = glue("{ipred}*(1+{ipred}*{name_mapping[1]})")
+      PROP = glue("{ipred}*(1+{name_mapping[1]})")
     ))
   }
-  prop <- ifelse(type == "nonmem", glue("EPS({which(elements == 'PROP')})"), "PROP")
-  add <- ifelse(type == "nonmem", glue("EPS({which(elements == 'ADD')})"), "ADD")
-  return(glue("{ipred}*(1+{ipred}*{prop}) + {add}"))
+  prop <- ifelse(type == "nonmem",
+                 glue("EPS({which(elements == 'PROP')})"),
+                 "PROP")
+  add <- ifelse(type == "nonmem",
+                glue("EPS({which(elements == 'ADD')})"),
+                "ADD")
+  return(glue("{ipred}*(1+{prop}) + {add}"))
 }
