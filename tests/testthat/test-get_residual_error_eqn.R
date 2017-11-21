@@ -17,13 +17,13 @@ describe("getting residual error mapping works", {
     )
     expect_equal(
       get_residual_error_eqn("PROP", "IPRED", "nonmem"),
-      glue::glue("IPRED*(1+IPRED*EPS(1))")
+      glue::glue("IPRED*(1+EPS(1))")
     )
   })
   it("sets up combined error structure", {
     expect_equal(
       get_residual_error_eqn(c("PROP", "ADD"), "IPRED", "nonmem"),
-      glue::glue("IPRED*(1+IPRED*EPS(1)) + EPS(2)")
+      glue::glue("IPRED*(1+EPS(1)) + EPS(2)")
     )
   })
 })

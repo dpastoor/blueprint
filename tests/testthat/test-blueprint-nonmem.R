@@ -51,7 +51,7 @@ describe("residual error works for nonmem", {
 
   bp <- blueprint$clone()
   bp$add_residual_error(PROP = 0.1)
-  expect_equal(bp$render(), "\nY = IPRED*(1+IPRED*EPS(1))\n")
+  expect_equal(bp$render(), "\nY = IPRED*(1+EPS(1))\n")
   })
   it("works iteratively in both directions", {
   bp <- blueprint$clone()
@@ -59,13 +59,13 @@ describe("residual error works for nonmem", {
   expect_equal(bp$render(), "\nY = IPRED + EPS(1)\n")
 
   bp$add_residual_error(PROP = 0.1)
-  expect_equal(bp$render(), "\nY = IPRED*(1+IPRED*EPS(2)) + EPS(1)\n")
+  expect_equal(bp$render(), "\nY = IPRED*(1+EPS(2)) + EPS(1)\n")
 
   bp <- blueprint$clone()
   bp$add_residual_error(PROP = 0.1)
-  expect_equal(bp$render(), "\nY = IPRED*(1+IPRED*EPS(1))\n")
+  expect_equal(bp$render(), "\nY = IPRED*(1+EPS(1))\n")
 
   bp$add_residual_error(ADD = 0.1)
-  expect_equal(bp$render(), "\nY = IPRED*(1+IPRED*EPS(1)) + EPS(2)\n")
+  expect_equal(bp$render(), "\nY = IPRED*(1+EPS(1)) + EPS(2)\n")
   })
 })

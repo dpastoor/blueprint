@@ -50,7 +50,7 @@ describe("residual error works for mrgsolve", {
 
   bp <- blueprint$clone()
   bp$add_residual_error(PROP = 0.1)
-  expect_equal(bp$render(), "\nDV = CP*(1+CP*PROP)\n")
+  expect_equal(bp$render(), "\nDV = CP*(1+PROP)\n")
   })
   it("works iteratively", {
   bp <- blueprint$clone()
@@ -58,6 +58,6 @@ describe("residual error works for mrgsolve", {
   expect_equal(bp$render(), "\nDV = CP + ADD\n")
 
   bp$add_residual_error(PROP = 0.1)
-  expect_equal(bp$render(), "\nDV = CP*(1+CP*PROP) + ADD\n")
+  expect_equal(bp$render(), "\nDV = CP*(1+PROP) + ADD\n")
   })
 })
