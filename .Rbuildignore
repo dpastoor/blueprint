@@ -7,3 +7,4 @@ spec
 ^README\.Rmd$
 ^README\.html$
 docs/
+^scratch.R$
