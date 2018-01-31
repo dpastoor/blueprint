@@ -28,17 +28,6 @@ ignore <- function(bp, x, overwrite = FALSE) {
   return(bp)
 }
 
-#' chainable function to access add_params method
-#'
-#' @param bp blueprint object
-#' @param ... params to pass
-#' @export
-parameters <- function(bp, ...) {
-    bp <- bp$clone()
-    bp$add_params(...)
-    return(bp)
-}
-
 #' chainable method to add_constants
 #'
 #' @param bp blueprint object
