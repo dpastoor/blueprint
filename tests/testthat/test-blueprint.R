@@ -1,16 +1,88 @@
 context("blueprint")
 
+
 cl_def <- parameter(5, name = "CL")
-cl_def_comment <- parameter(value = 5, name = "CL", comment = "TVCL; (L/hr)")
-v_def <- parameter(value = 48.2, name = "V", comment = "TVV; (L)", lower_bound = 0, upper_bound = 200)
-cl_def_fixed <- parameter(value = 5, name = "CL", comment = "TVCL; (L/hr)", fixed = TRUE)
+cl_def_comment <-
+  parameter(value = 5,
+            name = "CL",
+            comment = "TVCL; (L/hr)")
+v_def <-
+  parameter(
+    value = 48.2,
+    name = "V",
+    comment = "TVV; (L)",
+    lower_bound = 0,
+    upper_bound = 200
+  )
+cl_def_fixed <-
+  parameter(
+    value = 5,
+    name = "CL",
+    comment = "TVCL; (L/hr)",
+    fixed = TRUE
+  )
 
 describe("Blueprint", {
+  it("can be initialized with no type", {
+    expect_message(new_blueprint(), "no model type specified")
+    blueprint <- new_blueprint()
+    expect_equal(blueprint, structure(
+      list(
+        hooks = NULL,
+        partials = NULL,
+        equation_mapper = NULL,
+        constants = list(),
+        parameters = list(),
+        omegas = list(),
+        sigmas = list()
+      ),
+      .Names = c(
+        "hooks",
+        "partials",
+        "equation_mapper",
+        "constants",
+        "parameters",
+        "omegas",
+        "sigmas"
+      ),
+      class = "blueprint"
+    ))
+  })
+
+  it("can be initialized with a type", {
+    expect_message(new_blueprint("nonmem"),
+                   "initializing new blueprint of type: nonmem")
+    blueprint <- new_blueprint("nonmem")
+    expect_equal(blueprint, structure(
+      list(
+        hooks = NULL,
+        partials = NULL,
+        equation_mapper = NULL,
+        constants = list(),
+        parameters = list(),
+        omegas = list(),
+        sigmas = list()
+      ),
+      .Names = c(
+        "hooks",
+        "partials",
+        "equation_mapper",
+        "constants",
+        "parameters",
+        "omegas",
+        "sigmas"
+      ),
+      class = c(
+        "nonmem_blueprint",
+        "blueprint"
+        )
+    ))
+  })
+
   it("can take a shorthand parameter definition", {
-    blueprint <- Blueprint$new()
-    blueprint$add_params(CL = 5)
-    cl <- blueprint$get_param("CL")
-    expect_equal(cl, cl_def)
+    blueprint <- new_blueprint()
+    bp_cl <- blueprint %>%
+      parameters(CL = 5)
   })
 
   it("can take a complete parameter definition", {
