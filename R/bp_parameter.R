@@ -1,8 +1,4 @@
-#' generic setting of parameters for blueprints
-#' @param .bp blueprint object
-#' @param ... parameters to set
-#' @param .overwrite whether to overwrite a param if it already exists
-#' @rdname export
+#' @rdname parameters
 #' @export
 parameters.blueprint <- function(.bp, ..., .overwrite = TRUE) {
   param_list <- dots(...)
@@ -11,12 +7,12 @@ parameters.blueprint <- function(.bp, ..., .overwrite = TRUE) {
   null_indices <- purrr::map_lgl(param_list, is.null)
   to_remove <- param_names[null_indices]
   purrr::walk(to_remove, function(.x) {
-    .bp$parameters[[.x]] <- NULL
+    .bp$parameters[[.x]] <<- NULL
   })
   param_list <- param_list[!null_indices]
   param_names <- param_names[!null_indices]
   if (!length(param_list)) {
-    return(invisible())
+    return(.bp)
   }
   constructed_params <- map2(param_list, param_names, function(param_info, .pn) {
     # if numeric assume shorthand value only
@@ -45,7 +41,7 @@ parameters.blueprint <- function(.bp, ..., .overwrite = TRUE) {
                                  set_names(constructed_params, constructed_param_names)) %>%
     discard(is.null)
   # if get a case where everything is overwritten set to empty list
-  if (!length(final_parameters)) {
+  if (!length(final_parameters) || is.null(final_parameters)) {
     # don't want a named list just a bare empty list
     final_parameters <- list()
   }
@@ -53,9 +49,8 @@ parameters.blueprint <- function(.bp, ..., .overwrite = TRUE) {
   return(.bp)
 }
 
-#' generic setting of parameters for blueprints
 #' @export
 #' @rdname parameters
-parameters.nonmem_blueprint <- function(.bp, ...) {
-  NextMethod(.bp, ...)
+parameters.nonmem_blueprint <- function(.bp, ..., .overwrite = TRUE) {
+  NextMethod(.bp, ..., .overwrite)
 }
